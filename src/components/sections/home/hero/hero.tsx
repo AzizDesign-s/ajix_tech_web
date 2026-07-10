@@ -9,6 +9,7 @@ import { StatCard } from '@/components/ui/statCard';
 import { OrbitVisual } from '@/components/sections/home/hero/orbitVisual';
 import { Button } from '@/components/ui/button';
 import { Magnetic } from '@/components/shared/magnetic';
+import { ScrollIndicator } from '@/components/ui/scrollIndicator';
 
 // Staggers each child in on load — badge, then heading, then paragraph,
 // then buttons, then the orbit visual, one after another.
@@ -89,17 +90,19 @@ export function Hero() {
             value="4+"
             label="Years of Experience"
             delay={0.6}
-            className="absolute top-1/2 -left-32 z-1 hidden -translate-y-1/2 lg:block"
+            className="absolute top-2/5 -left-32 z-1 hidden -translate-y-1/2 lg:block"
           />
           <OrbitVisual className="h-105 w-105" />
           <StatCard
             value="10+"
             label="Digital Products Designed"
             delay={0.8}
-            className="absolute top-3/4 -right-36 z-1 hidden -translate-y-1/2 lg:block"
+            className="absolute top-3/5 -right-36 z-1 hidden -translate-y-1/2 lg:block"
           />
         </motion.div>
       </motion.div>
+
+      <ScrollIndicator />
     </section>
   );
 }
