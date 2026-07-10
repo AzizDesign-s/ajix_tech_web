@@ -26,7 +26,7 @@ const itemVariants: Variants = {
 
 export function Hero() {
   return (
-    <section className="relative flex min-h-screen w-full items-center justify-center overflow-hidden overflow-y-visible px-4">
+    <section className="relative flex min-h-screen w-full items-center justify-center overflow-hidden px-4">
       <GridBackground />
 
       <div className="pointer-events-none absolute inset-0 z-1">
@@ -40,43 +40,50 @@ export function Hero() {
         variants={containerVariants}
         initial="hidden"
         animate="show"
-        className="relative z-10 flex flex-col flex-wrap items-center gap-6 px-4 pt-40 text-center"
+        className="relative flex flex-col flex-wrap items-center justify-start gap-1 pt-40"
       >
-        <motion.div variants={itemVariants}>
-          <GlowBadge>Enterprise UI/UX Designer · Dubai, UAE</GlowBadge>
-        </motion.div>
+        <div className="z-10 flex flex-col flex-wrap items-center justify-start gap-6 px-4 text-center">
+          <motion.div variants={itemVariants}>
+            <GlowBadge>Enterprise UI/UX Designer · Dubai, UAE</GlowBadge>
+          </motion.div>
 
-        <motion.h1
-          variants={itemVariants}
+          <motion.h1
+            variants={itemVariants}
 
-          className="font-heading text-foreground max-w-3xl text-3xl font-bold sm:text-4xl md:text-6xl"
-        >
-          Designing Enterprise Digital Products{' '}
-          <span className="bg-gradient-primary bg-clip-text text-transparent">That Scale</span>
-        </motion.h1>
+            className="font-heading text-foreground max-w-3xl text-3xl font-bold sm:text-4xl md:text-6xl"
+          >
+            Designing Enterprise Digital Products{' '}
+            <span className="bg-gradient-primary bg-clip-text text-transparent">That Scale</span>
+          </motion.h1>
 
-        <motion.p variants={itemVariants} className="text-muted max-w-xl">
-          I&apos;m Abdul Aziz, a UI/UX Designer, Product Designer, and Frontend Engineer crafting
-          scalable digital products for startups, SaaS companies, and enterprise businesses across
-          Dubai, the UAE, and beyond.
-        </motion.p>
+          <motion.p variants={itemVariants} className="text-muted max-w-xl">
+            I&apos;m Abdul Aziz, a UI/UX Designer, Product Designer, and Frontend Engineer crafting
+            scalable digital products for startups, SaaS companies, and enterprise businesses across
+            Dubai, the UAE, and beyond.
+          </motion.p>
 
-        <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-4">
-          <Magnetic>
-            <Button variant="gradient" size="lg" icon={<ArrowUpRight size={16} />} href="/projects">
-              View Projects
-            </Button>
-          </Magnetic>
-          <Magnetic>
-            <Button variant="surface" size="lg" href="/contact">
-              Let&apos;s Connect
-            </Button>
-          </Magnetic>
-        </motion.div>
+          <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-4">
+            <Magnetic>
+              <Button
+                variant="gradient"
+                size="lg"
+                icon={<ArrowUpRight size={16} />}
+                href="/projects"
+              >
+                View Projects
+              </Button>
+            </Magnetic>
+            <Magnetic>
+              <Button variant="surface" size="lg" href="/contact">
+                Let&apos;s Connect
+              </Button>
+            </Magnetic>
+          </motion.div>
+        </div>
 
         <motion.div
           variants={itemVariants}
-          className="relative mt-8 flex items-center justify-center"
+          className="relative mt-8 flex items-center justify-center pb-20"
         >
           <StatCard
             value="4+"

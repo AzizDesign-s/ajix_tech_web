@@ -11,7 +11,7 @@ interface SectionProps {
 // its own full-bleed layout.
 export function Section({ children, className, id }: SectionProps) {
   return (
-    <section id={id} className={cn('mx-auto max-w-7xl px-4 pt-25 pb-50 md:px-10', className)}>
+    <section id={id} className={cn('mx-auto max-w-7xl px-4 pt-25 pb-25 md:px-10', className)}>
       {children}
     </section>
   );
