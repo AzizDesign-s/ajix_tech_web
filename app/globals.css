@@ -1,26 +1,91 @@
 @import 'tailwindcss';
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* ── Colors ─────────────────────────────── */
+  --color-background: #01040e;
+  --color-border: #0f1d3d;
+  --color-primary: #2563eb;
+  --color-violet: #4f46e5;
+  --color-cyan: #22d3ee;
+  --color-blue-light: #60a5fa;
+  --color-foreground: #ffffff;
+  --color-card: #050d24;
+  --color-muted: #94a3b8;
+
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+
+  /* ── Gradients (use as bg-gradient-primary, etc.) ── */
+  --background-image-gradient-primary: linear-gradient(
+    226deg,
+    #22d3ee 4.46%,
+    #2563eb 54.55%,
+    #4f46e5 95.54%
+  );
+  --background-image-gradient-secondary: linear-gradient(149deg, #60a5fa 9.71%, #2563eb 94.41%);
+  --background-image-gradient-surface: linear-gradient(315deg, #01040e 0%, #031032 100%);
+  --background-image-gradient-nav: linear-gradient(
+    315deg,
+    rgba(1, 4, 14, 0.6) 0%,
+    rgba(3, 16, 50, 0.6) 100%
+  );
+
+  /* ── Fonts (wired to the CSS variables set in layout.tsx) ── */
+  --font-heading: var(--font-amiri);
+  --font-body: var(--font-public-sans);
+
+  /* ── Radius — proposed, confirm/adjust once we're in a section ── */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+
+  /* ── Shadows — soft glow style fitting a glassmorphism/dark UI ── */
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
+  --shadow-glow-blue: 0 0 40px rgba(37, 99, 235, 0.25);
+  --shadow-glow-cyan: 0 0 40px rgba(34, 211, 238, 0.2);
+
+  --animate-spotlight: spotlight 2s ease 0.75s 1 forwards;
+  --animate-spin-slow: spin-slow 3s linear infinite;
+  --animate-float: float 4s ease-in-out infinite;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@keyframes spotlight {
+  0% {
+    opacity: 0;
+    transform: translate(-72%, -62%) scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -40%) scale(1);
+  }
+}
+
+@keyframes spin-slow {
+  to {
+    --angle: 360deg;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-body);
 }
