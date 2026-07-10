@@ -31,8 +31,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
-      <body className={`${amiri.variable} ${publicSans.variable} antialiased`}>
+    <html lang="en" className={`dark ${amiri.variable} ${publicSans.variable}`}>
+      <body className="antialiased">
         <Navbar />
         <main>{children}</main>
       </body>

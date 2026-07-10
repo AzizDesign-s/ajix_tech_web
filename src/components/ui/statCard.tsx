@@ -19,9 +19,11 @@ export function StatCard({ value, label, className, delay = 0 }: StatCardProps) 
       transition={{ duration: 0.6, delay, ease: 'easeOut' }}
       className={className}
     >
-      <div className="animate-float border-border bg-card/80 rounded-lg border px-4 py-3 backdrop-blur-md">
-        <p className="font-heading text-foreground text-lg font-bold">{value}</p>
-        <p className="text-muted text-xs">{label}</p>
+      <div className="animate-float border-border bg-card flex flex-col items-start justify-center gap-0 rounded-lg border px-4 py-3">
+        <p className="font-heading bg-gradient-primary bg-clip-text text-3xl font-bold text-transparent">
+          {value}
+        </p>
+        <p className="text-muted text-sm">{label}</p>
       </div>
     </motion.div>
   );
