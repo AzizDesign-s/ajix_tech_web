@@ -1,6 +1,7 @@
 import { CTASection } from '@/components/shared/ctaSection';
 import { GradientText } from '@/components/shared/gradientText';
 import { siteConfig } from '@/config/site';
+import { openAndDownloadResume } from '@/lib/utils/resume';
 
 export function CTA() {
   return (
@@ -17,8 +18,12 @@ export function CTA() {
       primaryLabel="Start a Conversation"
       primaryHref="/contact"
       secondaryLabel="Download Resume"
-      secondaryHref={siteConfig.resumeUrl}
-      secondaryDownload
+
+      secondaryOnClick={
+        siteConfig.resumeUrl
+          ? () => openAndDownloadResume(siteConfig.resumeUrl, 'Abdul_Aziz_Resume.pdf')
+          : undefined
+      }
     />
   );
 }

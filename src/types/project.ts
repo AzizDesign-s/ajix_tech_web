@@ -1,5 +1,3 @@
-import type { Tool } from '@/types/tools';
-
 export interface GalleryImage {
   src: string;
   alt: string;

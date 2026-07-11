@@ -38,7 +38,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
       href={href || '#'}
       target={isExternal ? '_blank' : undefined}
       rel={isExternal ? 'noopener noreferrer' : undefined}
-      className="group relative block overflow-hidden rounded-2xl p-px"
+      className="group focus-visible:ring-primary relative block overflow-hidden rounded-2xl p-px focus-visible:ring-2 focus-visible:outline-none"
       aria-label={`View ${project.name}`}
     >
       {/* Rotating gradient border — contained to the 1px ring via p-px above */}

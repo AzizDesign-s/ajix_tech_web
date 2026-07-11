@@ -33,7 +33,7 @@ export function Footer() {
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className="text-foreground/70 hover:text-primary text-sm font-medium transition-colors"
+                  className="text-foreground/70 hover:text-primary focus-visible:ring-primary rounded-md text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none"
                 >
                   {link.label}
                 </Link>
@@ -71,7 +71,7 @@ export function Footer() {
           <button
             type="button"
             onClick={scrollToTop}
-            className="text-foreground/70 hover:text-foreground flex items-center gap-2 text-sm font-medium transition-colors"
+            className="text-foreground/70 focus-visible:ring-primary hover:text-foreground flex items-center gap-2 rounded-md text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none"
             aria-label="Scroll back to top"
           >
             Back to top

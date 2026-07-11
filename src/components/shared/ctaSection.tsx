@@ -16,7 +16,7 @@ interface CTASectionProps {
   primaryHref: string;
   secondaryLabel?: string;
   secondaryHref?: string;
-  secondaryDownload?: boolean;
+  secondaryOnClick?: () => void;
   className?: string;
 }
 
@@ -31,7 +31,7 @@ export function CTASection({
   primaryHref,
   secondaryLabel,
   secondaryHref,
-  secondaryDownload,
+  secondaryOnClick,
   className,
 }: CTASectionProps) {
   return (
@@ -61,7 +61,7 @@ export function CTASection({
           </Magnetic>
           {secondaryLabel && secondaryHref && (
             <Magnetic>
-              <Button variant="surface" size="md" href={secondaryHref} download={secondaryDownload}>
+              <Button variant="surface" size="md" href={secondaryHref} onClick={secondaryOnClick}>
                 {secondaryLabel}
               </Button>
             </Magnetic>

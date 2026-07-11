@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
+import { openAndDownloadResume } from '@/lib/utils/resume';
 import { Logo } from '@/components/shared/logo';
 import { Button } from '@/components/ui/button';
 import { AvailabilityBadge } from '@/components/shared/availabilityBadge';
@@ -40,7 +41,7 @@ export function Navbar() {
           isScrolled && 'shadow-card',
         )}
       >
-        <Logo />
+        <Logo priority />
 
         {/* Desktop nav links */}
         <nav className="hidden items-center gap-8 lg:flex">
@@ -60,10 +61,12 @@ export function Navbar() {
           <AvailabilityBadge />
           <LanguageToggle />
           {siteConfig.resumeUrl && (
-            <Button variant="primary" size="sm">
-              <a href={siteConfig.resumeUrl} target="_blank" rel="noopener noreferrer">
-                Get Resume
-              </a>
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={() => openAndDownloadResume(siteConfig.resumeUrl, 'Abdul_Aziz_Resume.pdf')}
+            >
+              Get Resume
             </Button>
           )}
         </div>
@@ -101,7 +104,7 @@ export function Navbar() {
               className="border-border bg-background fixed inset-y-0 right-0 z-70 flex w-[80%] max-w-sm flex-col gap-10 border-l p-6 lg:hidden"
             >
               <div className="flex items-center justify-between">
-                <Logo />
+                <Logo priority />
                 <button
                   type="button"
                   onClick={() => setIsMobileMenuOpen(false)}
@@ -133,12 +136,12 @@ export function Navbar() {
                     <Button
                       variant="gradient"
                       size="sm"
-
+                      onClick={() =>
+                        openAndDownloadResume(siteConfig.resumeUrl, 'Abdul_Aziz_Resume.pdf')
+                      }
                       className="flex-1"
                     >
-                      <a href={siteConfig.resumeUrl} target="_blank" rel="noopener noreferrer">
-                        Get Resume
-                      </a>
+                      Get Resume
                     </Button>
                   )}
                 </div>
