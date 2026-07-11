@@ -34,11 +34,21 @@ interface ButtonBaseProps extends VariantProps<typeof buttonVariants> {
   icon?: ReactNode;
   className?: string;
   href?: string; // if provided, renders as a Link instead of <button>
+  download?: boolean;
 }
 
 type ButtonProps = ButtonBaseProps & Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'>;
 
-export function Button({ children, icon, variant, size, className, href, ...props }: ButtonProps) {
+export function Button({
+  children,
+  download,
+  icon,
+  variant,
+  size,
+  className,
+  href,
+  ...props
+}: ButtonProps) {
   // Icon-only: no text passed in, just an icon — used for the square arrow buttons
   const isIconOnly = !children && Boolean(icon);
 
@@ -57,7 +67,7 @@ export function Button({ children, icon, variant, size, className, href, ...prop
 
   if (href) {
     return (
-      <Link href={href} className={classes}>
+      <Link href={href} download={download} className={classes}>
         {content}
       </Link>
     );

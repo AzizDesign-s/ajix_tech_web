@@ -5,6 +5,7 @@ import { ToolsSection } from '@/components/sections/home/tools/toolsSection';
 import { SelectedProjects } from '@/components/sections/home/project/selectedProjects';
 import { WhyAjix } from '@/components/sections/home/why/whyAjix';
 import { WhyHireAjix } from '@/components/sections/home/hire/whyHireAjix';
+import { CTA } from '@/components/sections/home/cta/cta';
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
       <SelectedProjects />
       <WhyAjix />
       <WhyHireAjix />
+      <CTA />
     </>
   );
 }

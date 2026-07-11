@@ -9,7 +9,7 @@ export const siteConfig = {
   description:
     'Premium product design and frontend engineering for enterprise teams and founders in the UAE.',
   url: 'https://ajix-tech-web.vercel.app/', // update once custom domain is live
-  resumeUrl: '/public/resume/resume.pdf', // add link when ready
+  resumeUrl: '/resume/resume.pdf', // add link when ready
   email: 'aziaji46@gmail.com', // add contact email when ready
 };
 
@@ -19,9 +19,9 @@ export const navLinks = [
   { label: 'Contact', href: '/contact' },
 ];
 
-export const socialLinks = [
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/abdul-aziz-517a741a0/' },
-  { label: 'GitHub', href: 'https://github.com/AzizDesign-s' },
-  { label: 'Behance', href: 'https://www.behance.net/abdulaziz92' },
-  { label: 'Instagram', href: 'https://www.instagram.com/ajixdesign/' },
-];
+export const socials = {
+  linkedin: 'https://www.linkedin.com/in/abdul-aziz-517a741a0/',
+  behance: 'https://www.behance.net/abdulaziz92',
+  instagram: 'https://www.instagram.com/ajixdesign/',
+  github: 'https://github.com/AzizDesign-s',
+};

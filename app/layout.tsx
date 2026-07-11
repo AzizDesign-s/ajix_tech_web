@@ -3,6 +3,7 @@ import { Amiri, Public_Sans } from 'next/font/google';
 import './globals.css';
 import { siteConfig } from '@/config/site';
 import { Navbar } from '@/components/layout/Navbar/navbar';
+import { Footer } from '@/components/layout/Footer/footer';
 
 // Heading font — used for hero titles, section titles, major headings
 const amiri = Amiri({
@@ -39,6 +40,7 @@ export default function RootLayout({
       <body className="antialiased">
         <Navbar />
         <main>{children}</main>
+        <Footer />
       </body>
     </html>
   );
