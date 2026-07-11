@@ -5,15 +5,9 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import type { Category } from '@/types/category';
-import { PROJECT_CATEGORIES, type ProjectCategory } from '@/types/project';
-import { cn } from '@/lib/utils/cn';
 
-const categoryGradients: Record<ProjectCategory, string> = {
-  [PROJECT_CATEGORIES.ENTERPRISE_PRODUCT_DESIGN]: 'from-primary/40 via-violet/20 to-transparent',
-  [PROJECT_CATEGORIES.FRONTEND_ENGINEERING]: 'from-cyan/40 via-primary/20 to-transparent',
-  [PROJECT_CATEGORIES.INTERACTIVE_EXPERIENCE]: 'from-violet/40 via-blue-light/20 to-transparent',
-  [PROJECT_CATEGORIES.BRAND_IDENTITY]: 'from-blue-light/40 via-cyan/20 to-transparent',
-};
+import { gradientColorClass } from '@/lib/constants/categoryClasses';
+import { cn } from '@/lib/utils/cn';
 
 interface CategoryCardProps {
   category: Category;
@@ -26,7 +20,7 @@ export function CategoryCard({ category, index, hoveredIndex, onHover }: Categor
   const isHovered = hoveredIndex === index;
   const isDimmed = hoveredIndex !== null && !isHovered;
   const baseRotate = index % 2 === 0 ? -2 : 2; // alternating tilt — poker-card fan effect
-  const gradient = categoryGradients[category.slug];
+  const gradient = gradientColorClass[category.color];
 
   return (
     <Link
@@ -44,7 +38,7 @@ export function CategoryCard({ category, index, hoveredIndex, onHover }: Categor
         }}
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
         className={cn(
-          'group border-border bg-gradient-surface shadow-card relative flex h-80 flex-col justify-between overflow-hidden rounded-2xl border p-4 backdrop-blur-xl transition-[border-color,opacity,box-shadow] duration-300',
+          'group border-border bg-gradient-surface shadow-card relative flex h-80 flex-col justify-between overflow-hidden rounded-2xl border p-4 backdrop-blur-xl transition-[border-color,opacity,box-shadow] duration-30',
           isHovered && 'border-border/40 shadow-glow-blue',
           isDimmed && 'opacity-60',
         )}

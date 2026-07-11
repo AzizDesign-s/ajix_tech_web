@@ -1,11 +1,4 @@
-// ─────────────────────────────────────────────
-// Shared primitives — reused across multiple categories
-// ─────────────────────────────────────────────
-
-export interface Tool {
-  name: string;
-  icon: string; // icon key (mapped via an icon map, same pattern as your featureIconMap)
-}
+import type { Tool } from '@/types/tools';
 
 export interface GalleryImage {
   src: string;
@@ -32,10 +25,6 @@ export interface JourneyStep {
   description: string;
 }
 
-// ─────────────────────────────────────────────
-// Category enum — single source of truth for category values
-// ─────────────────────────────────────────────
-
 export const PROJECT_CATEGORIES = {
   ENTERPRISE_PRODUCT_DESIGN: 'enterprise-product-design',
   FRONTEND_ENGINEERING: 'frontend-engineering',
@@ -45,160 +34,74 @@ export const PROJECT_CATEGORIES = {
 
 export type ProjectCategory = (typeof PROJECT_CATEGORIES)[keyof typeof PROJECT_CATEGORIES];
 
-// ─────────────────────────────────────────────
-// Base fields — present on every project, used by the Card + homepage
-// ─────────────────────────────────────────────
-
 interface ProjectBase {
   id: string;
   slug: string;
   name: string;
-  description: string; // full long description; Card component truncates for display
+  description: string;
   category: ProjectCategory;
-  tools: Tool[];
+  toolSlugs: string[]; // references src/data/tools.ts by slug
   image: string;
-  featured: boolean; // drives the "max 6 on homepage" toggle
+  featured: boolean;
+  isDummy?: boolean;
 }
-
-// ─────────────────────────────────────────────
-// Category 1 — Enterprise Product Design (full case study page)
-// ─────────────────────────────────────────────
 
 export interface EnterpriseProductDesignProject extends ProjectBase {
   category: 'enterprise-product-design';
-  links: {
+  links?: {
     caseStudy?: string;
     architecture?: string;
     liveProject?: string;
   };
-  overview: {
-    heading: string;
-    image: string;
-    paragraph: string;
-  };
-  role: string;
-  timeline: string;
-  goals: {
-    heading: string;
-    list: string[];
-    image: string;
-  };
-  research: {
-    heading: string;
-    content: string;
-    image: string;
-  };
-  personas: [Persona, Persona, Persona, Persona]; // exactly 4
-  journeyMap: {
-    heading: string;
-    steps: JourneyStep[];
-  };
-  wireframes: {
-    heading: string;
-    gallery: GalleryImage[];
-  };
-  designSystem: {
+  overview?: { heading: string; image: string; paragraph: string };
+  role?: string;
+  timeline?: string;
+  goals?: { heading: string; list: string[]; image: string };
+  research?: { heading: string; content: string; image: string };
+  personas?: [Persona, Persona, Persona, Persona];
+  journeyMap?: { heading: string; steps: JourneyStep[] };
+  wireframes?: { heading: string; gallery: GalleryImage[] };
+  designSystem?: { heading: string; description: string; image: string };
+  highFidelityUI?: { heading: string; gallery: GalleryImage[] };
+  accessibility?: { heading: string; description: string; image: string };
+  challenges?: { heading: string; description: string; image: string };
+  businessResults?: {
     heading: string;
     description: string;
-    image: string;
+    metrics: Metric[];
   };
-  highFidelityUI: {
-    heading: string;
-    gallery: GalleryImage[];
-  };
-  accessibility: {
-    heading: string;
-    description: string;
-    image: string;
-  };
-  challenges: {
-    heading: string;
-    description: string;
-    image: string;
-  };
-  businessResults: {
-    heading: string;
-    description: string;
-    metrics: Metric[]; // max 4, enforced in the service layer
-  };
-  keyLearning: {
-    heading: string;
-    description: string;
-    image: string;
-  };
-  relatedProjectSlugs: string[]; // max 2, enforced in the service layer
+  keyLearning?: { heading: string; description: string; image: string };
+  relatedProjectSlugs?: string[];
 }
-
-// ─────────────────────────────────────────────
-// Category 2 — Frontend Engineering (build showcase page)
-// ─────────────────────────────────────────────
 
 export interface FrontendEngineeringProject extends ProjectBase {
   category: 'frontend-engineering';
-  liveUrl: string;
-  about: {
+  liveUrl: string; // required — button hides if empty, same pattern as resumeUrl
+  about?: { heading: string; description: string; image: string };
+  keyFeatures?: {
     heading: string;
-    description: string;
-    image: string;
+    features: { icon: string; heading: string; description: string }[];
   };
-  keyFeatures: {
-    heading: string;
-    features: {
-      icon: string;
-      heading: string;
-      description: string;
-    }[];
-  };
-  relatedProjectSlugs: string[]; // max 2
+  relatedProjectSlugs?: string[];
 }
-
-// ─────────────────────────────────────────────
-// Category 3 — Interactive Experience (no slug page — direct external link)
-// ─────────────────────────────────────────────
 
 export interface InteractiveExperienceProject extends ProjectBase {
   category: 'interactive-experience';
-  liveUrl: string; // card click goes straight here, no /projects/[slug] route
+  liveUrl: string; // required — card click goes straight here, no slug page
 }
-
-// ─────────────────────────────────────────────
-// Category 4 — Brand Identity (brand showcase page)
-// ─────────────────────────────────────────────
 
 export interface BrandIdentityProject extends ProjectBase {
   category: 'brand-identity';
-  overview: {
+  overview?: { heading: string; description: string; image: string };
+  logos?: { heading: string; light: string; dark: string };
+  colorPalette?: { heading: string; colors: { name: string; hex: string }[] };
+  typography?: {
     heading: string;
-    description: string;
-    image: string;
+    fonts: { name: string; sizes: string[]; sampleText: string }[];
   };
-  logos: {
-    heading: string;
-    light: string;
-    dark: string;
-  };
-  colorPalette: {
-    heading: string;
-    colors: { name: string; hex: string }[];
-  };
-  typography: {
-    heading: string;
-    fonts: {
-      name: string;
-      sizes: string[];
-      sampleText: string;
-    }[];
-  };
-  gallery: {
-    heading: string;
-    images: GalleryImage[];
-  };
-  relatedProjectSlugs: string[]; // max 2
+  gallery?: { heading: string; images: GalleryImage[] };
+  relatedProjectSlugs?: string[];
 }
-
-// ─────────────────────────────────────────────
-// The union — this is what components/services actually work with
-// ─────────────────────────────────────────────
 
 export type Project =
   | EnterpriseProductDesignProject
@@ -206,20 +109,15 @@ export type Project =
   | InteractiveExperienceProject
   | BrandIdentityProject;
 
-// Type guards — let components safely narrow the union
-// e.g. `if (isEnterpriseProject(project)) { project.personas ... }`
 export function isEnterpriseProject(project: Project): project is EnterpriseProductDesignProject {
   return project.category === PROJECT_CATEGORIES.ENTERPRISE_PRODUCT_DESIGN;
 }
-
 export function isFrontendProject(project: Project): project is FrontendEngineeringProject {
   return project.category === PROJECT_CATEGORIES.FRONTEND_ENGINEERING;
 }
-
 export function isInteractiveProject(project: Project): project is InteractiveExperienceProject {
   return project.category === PROJECT_CATEGORIES.INTERACTIVE_EXPERIENCE;
 }
-
 export function isBrandIdentityProject(project: Project): project is BrandIdentityProject {
   return project.category === PROJECT_CATEGORIES.BRAND_IDENTITY;
 }

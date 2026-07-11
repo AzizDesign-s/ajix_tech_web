@@ -29,7 +29,7 @@ export function CategorySection() {
         }
       />
 
-      <div className="relative z-10 mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="relative z-10 mt-16 grid max-w-96 grid-cols-1 gap-8 sm:max-w-full sm:grid-cols-2 md:w-full lg:grid-cols-4">
         {categories.map((category, index) => (
           <CategoryCard
             key={category.slug}

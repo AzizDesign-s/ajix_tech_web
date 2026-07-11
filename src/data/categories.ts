@@ -14,6 +14,7 @@ export const categories: Category[] = [
     description:
       'End-to-end UX case studies for enterprise SaaS platforms, dashboards, & business app.',
     image: product,
+    color: 'cyan',
   },
   {
     slug: PROJECT_CATEGORIES.FRONTEND_ENGINEERING,
@@ -21,6 +22,7 @@ export const categories: Category[] = [
     name: 'Frontend Engineering',
     description: 'Production-ready React applications built from design systems to deployment.',
     image: frontend,
+    color: 'primary',
   },
   {
     slug: PROJECT_CATEGORIES.INTERACTIVE_EXPERIENCE,
@@ -29,6 +31,7 @@ export const categories: Category[] = [
     description:
       'Interactive user experiences powered by Framer Motion, GSAP, and modern web animation.',
     image: framer,
+    color: 'violet',
   },
   {
     slug: PROJECT_CATEGORIES.BRAND_IDENTITY,
@@ -36,5 +39,6 @@ export const categories: Category[] = [
     name: 'Brand Identity',
     description: 'Visual identities, logo systems, typography, and scalable brand guidelines.',
     image: branding,
+    color: 'purple',
   },
 ];
