@@ -43,7 +43,7 @@ export function Navbar() {
         )}
       >
         <Link href="/" aria-label="AJIX — Home" className={cn('inline-flex')}>
-          <Image src={logo} alt="AJIX" width={34} height={30} className="h-auto w-32" />
+          <Image src={logo} alt="AJIX" width={34} height={30} priority className="h-auto w-32" />
         </Link>
         {/* Desktop nav links */}
         <nav className="hidden items-center gap-8 lg:flex">
@@ -107,7 +107,14 @@ export function Navbar() {
             >
               <div className="flex items-center justify-between">
                 <Link href="/" aria-label="AJIX — Home" className={cn('inline-flex')}>
-                  <Image src={logo} alt="AJIX" width={34} height={30} className="h-auto w-32" />
+                  <Image
+                    src={logo}
+                    alt="AJIX"
+                    width={34}
+                    height={30}
+                    priority
+                    className="h-auto w-32"
+                  />
                 </Link>
 
                 <button

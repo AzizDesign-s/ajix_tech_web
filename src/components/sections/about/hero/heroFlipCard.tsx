@@ -22,7 +22,14 @@ export function ProfileCard() {
       <div className="animate-card-spin h-full w-full transform-3d hover:[animation-play-state:paused]">
         {/* Front face */}
         <div className="border-border shadow-glow-blue absolute inset-0 overflow-hidden rounded-2xl border backface-hidden">
-          <Image src={photo} alt="Abdul Aziz" fill className="object-cover" priority />
+          <Image
+            src={photo}
+            alt="Abdul Aziz"
+            fill
+            priority
+            sizes="(max-width: 768px) 100vw, 320px"
+            className="object-cover"
+          />
           <div className="from-background/90 absolute inset-x-0 bottom-0 flex items-center justify-center gap-3 bg-linear-to-t to-transparent p-5 pt-10">
             <SocialLink href={socials.instagram} label="Instagram">
               <FaInstagram size={16} />
@@ -43,13 +50,23 @@ export function ProfileCard() {
         <div className="border-border bg-gradient-surface absolute inset-0 flex transform-[rotateY(180deg)] flex-col items-center justify-center gap-6 rounded-2xl border p-8 backface-hidden">
           <AvailabilityBadge />
 
-          <Image src={logo} alt="AJIX" width={170} height={40} className="h-auto w-36" />
+          <Image
+            src={logo}
+            loading="eager"
+            alt="AJIX"
+            width={40}
+            height={40}
+            className="h-auto w-auto object-contain"
+            priority
+          />
 
           <Image
             src={qrCode}
             alt="Scan to connect"
             width={140}
             height={140}
+            priority
+            sizes="96px"
             className="bg-foreground h-auto w-auto rounded-lg p-2"
           />
         </div>

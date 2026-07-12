@@ -21,6 +21,7 @@ export function FooterWordmark() {
           width={751}
           height={146}
           className="pointer-events-none h-auto w-48 sm:w-[320px] md:w-105 lg:w-130"
+          priority
         />
       </motion.div>
 
