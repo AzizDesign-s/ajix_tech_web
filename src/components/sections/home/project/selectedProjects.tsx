@@ -27,7 +27,7 @@ export function SelectedProjects() {
         }
       />
 
-      <div className="relative z-10 mt-16 grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <div className="relative z-10 mt-16 grid grid-cols-1 gap-6 md:grid-cols-2">
         <div className="mt-0 flex flex-col gap-6">
           {leftColumn.map((project) => (
             <ProjectCard key={project.id} project={project} />

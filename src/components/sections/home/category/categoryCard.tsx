@@ -82,7 +82,7 @@ export function CategoryCard({ category, index, hoveredIndex, onHover }: Categor
             alt={category.name}
             fill
             sizes="(max-width: 768px) 100vw, 25vw"
-            className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+            className="pointer-events-none object-cover transition-transform duration-700 ease-out group-hover:scale-110"
           />
         </div>
 

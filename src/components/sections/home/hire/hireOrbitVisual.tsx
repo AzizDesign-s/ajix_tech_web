@@ -20,7 +20,8 @@ const ORBIT_TOOL_SLUGS = [
 ];
 
 const ORBIT_DURATION = 40; // seconds — outer ring
-const GLOW_DURATION = 30; // seconds — middle glow dots
+const GLOW_DURATION_1 = 30;
+const GLOW_DURATION_2 = 20; // seconds — middle glow dots
 
 interface HireOrbitVisualProps {
   className?: string;
@@ -59,7 +60,7 @@ export function HireOrbitVisual({ className }: HireOrbitVisualProps) {
         className="absolute"
         style={{ width: RING_SIZES[1], height: RING_SIZES[1] }}
         animate={{ rotate: 360 }}
-        transition={{ duration: GLOW_DURATION, repeat: Infinity, ease: 'linear' }}
+        transition={{ duration: GLOW_DURATION_1, repeat: Infinity, ease: 'linear' }}
       >
         {[0, 180].map((angle) => {
           const x = 50 + 50 * Math.cos((angle * Math.PI) / 180);
@@ -82,7 +83,7 @@ export function HireOrbitVisual({ className }: HireOrbitVisualProps) {
         className="absolute"
         style={{ width: RING_SIZES[2], height: RING_SIZES[2] }}
         animate={{ rotate: 360 }}
-        transition={{ duration: GLOW_DURATION, repeat: Infinity, ease: 'linear' }}
+        transition={{ duration: GLOW_DURATION_2, repeat: Infinity, ease: 'linear' }}
       >
         {[0, 180].map((angle) => {
           const x = 50 + 50 * Math.cos((angle * Math.PI) / 180);

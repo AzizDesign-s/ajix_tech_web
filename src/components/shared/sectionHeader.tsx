@@ -57,7 +57,7 @@ export function SectionHeader({
             )}
             <motion.span
               variants={{
-                hidden: { color: 'var(--color-muted)' },
+                hidden: { color: 'rgba(255, 255, 255, 0.8)' }, // was var(--color-muted) — too low contrast over glow
                 visible: {
                   color: 'var(--color-cyan)',
                   transition: { delay: 0.5, duration: 0.4, ease: 'easeOut' },

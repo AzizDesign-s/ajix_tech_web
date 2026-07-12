@@ -68,7 +68,7 @@ export function OrbitVisual({ className }: OrbitVisualProps) {
         })}
       </motion.div>
 
-      <div className="bg-gradient-primary shadow-glow-blue relative z-10 flex h-24 w-24 items-center justify-center rounded-full sm:h-20 sm:w-20 lg:h-36 lg:w-36">
+      <div className="bg-gradient-primary shadow-glow-blue relative z-10 flex h-28 w-28 items-center justify-center rounded-full sm:h-32 sm:w-32 lg:h-36 lg:w-36">
         <div className="bg-foreground flex h-14 w-14 items-center justify-center rounded-full sm:h-12 sm:w-12 lg:h-16 lg:w-16">
           <Image
             src={logo}

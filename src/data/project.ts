@@ -18,7 +18,7 @@ export const projects: Project[] = [
     description:
       'A SaaS-based restaurant ordering platform that streamlines menu browsing, QR ordering, payments, and order management with an intuitive customer and admin experience.',
     category: PROJECT_CATEGORIES.ENTERPRISE_PRODUCT_DESIGN,
-    toolSlugs: ['figma', 'react', 'typescript', 'tailwindcss'],
+    toolSlugs: ['figma', 'nextdotjs', 'javascript', 'tailwindcss'],
     image: qr,
     featured: true,
   },
@@ -29,7 +29,7 @@ export const projects: Project[] = [
     description:
       'An enterprise HR platform designed to simplify employee management, attendance, payroll, leave tracking, and organizational workflows through a scalable dashboard experience.',
     category: PROJECT_CATEGORIES.ENTERPRISE_PRODUCT_DESIGN,
-    toolSlugs: ['figma', 'react', 'typescript', 'tailwindcss'],
+    toolSlugs: ['figma', 'nextdotjs', 'typescript', 'tailwindcss'],
     image: hrms,
     featured: true,
   },

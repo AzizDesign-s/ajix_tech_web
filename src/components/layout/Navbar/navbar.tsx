@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
@@ -15,7 +16,7 @@ import { cn } from '@/lib/utils/cn';
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
+  const logo = '/logo/ajix-full-dark.svg';
   // Adds a shadow once the user scrolls, so the floating navbar
   // visually separates from the content behind it.
   useEffect(() => {
@@ -41,8 +42,7 @@ export function Navbar() {
           isScrolled && 'shadow-card',
         )}
       >
-        <Logo priority />
-
+        <Image src={logo} alt="AJIX" width={34} height={30} className="h-auto w-32" />
         {/* Desktop nav links */}
         <nav className="hidden items-center gap-8 lg:flex">
           {navLinks.map((link) => (
@@ -104,7 +104,7 @@ export function Navbar() {
               className="border-border bg-background fixed inset-y-0 right-0 z-70 flex w-[80%] max-w-sm flex-col gap-10 border-l p-6 lg:hidden"
             >
               <div className="flex items-center justify-between">
-                <Logo priority />
+                <Image src={logo} alt="AJIX" width={34} height={30} className="h-auto w-32" />
                 <button
                   type="button"
                   onClick={() => setIsMobileMenuOpen(false)}

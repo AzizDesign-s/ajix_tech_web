@@ -15,10 +15,10 @@ export function Logo({ className, priority = false }: LogoProps) {
       <Image
         src={logo}
         alt="AJIX"
-        width={44}
+        width={30}
         height={30}
         priority={priority}
-        className="h-auto w-auto"
+        className="h-auto w-10"
       />
     </Link>
   );

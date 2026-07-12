@@ -16,12 +16,13 @@ export function LanguageToggle({ className }: LanguageToggleProps) {
   return (
     <button
       type="button"
+
       onClick={() => setLanguage((prev) => (prev === 'en' ? 'ar' : 'en'))}
       className={cn(
         'border-border bg-card text-foreground hover:bg-border focus-visible:ring-ring flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border text-xs font-semibold transition-colors focus-visible:ring-2 focus-visible:outline-none',
         className,
       )}
-      aria-label="Switch language"
+      aria-label={`Switch language to ${nextLanguageLabel}`}
     >
       {nextLanguageLabel}
     </button>

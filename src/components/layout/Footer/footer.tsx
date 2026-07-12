@@ -19,7 +19,7 @@ export function Footer() {
   }
 
   return (
-    <footer className="border-border relative overflow-hidden border-t">
+    <footer className="border-border bg-background relative overflow-hidden border-t">
       <FooterGrid />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 py-10 md:px-10">
