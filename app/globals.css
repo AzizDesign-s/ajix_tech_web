@@ -56,6 +56,9 @@
   --animate-orbit-reverse: orbit-counter-rotate 40s linear infinite;
   --animate-border-rotate: spin-slow 6s linear infinite;
   --animate-gradient-shift: gradient-shift 6s linear infinite;
+
+  --animate-card-spin: card-spin 14s linear infinite;
+  --animate-twinkle: twinkle 3s ease-in-out infinite;
 }
 
 @keyframes orbit-rotate {
@@ -64,6 +67,27 @@
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes card-spin {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.3);
   }
 }
 

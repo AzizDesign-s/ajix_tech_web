@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { AboutHero } from '@/components/sections/about/hero/aboutHero';
 
 export const metadata: Metadata = {
   title: 'About',
@@ -8,8 +9,8 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <main>
-      <h1>About — coming soon</h1>
-    </main>
+    <>
+      <AboutHero />
+    </>
   );
 }

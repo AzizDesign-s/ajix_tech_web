@@ -61,7 +61,7 @@ export function CTASection({
           </Magnetic>
           {secondaryLabel && secondaryHref && (
             <Magnetic>
-              <Button variant="surface" size="md" href={secondaryHref} onClick={secondaryOnClick}>
+              <Button variant="surface" size="md" onClick={secondaryOnClick}>
                 {secondaryLabel}
               </Button>
             </Magnetic>

@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { openAndDownloadResume } from '@/lib/utils/resume';
-import { Logo } from '@/components/shared/logo';
+
 import { Button } from '@/components/ui/button';
 import { AvailabilityBadge } from '@/components/shared/availabilityBadge';
 import { LanguageToggle } from '@/components/shared/languageToggle';
@@ -42,7 +42,9 @@ export function Navbar() {
           isScrolled && 'shadow-card',
         )}
       >
-        <Image src={logo} alt="AJIX" width={34} height={30} className="h-auto w-32" />
+        <Link href="/" aria-label="AJIX — Home" className={cn('inline-flex')}>
+          <Image src={logo} alt="AJIX" width={34} height={30} className="h-auto w-32" />
+        </Link>
         {/* Desktop nav links */}
         <nav className="hidden items-center gap-8 lg:flex">
           {navLinks.map((link) => (
@@ -104,7 +106,10 @@ export function Navbar() {
               className="border-border bg-background fixed inset-y-0 right-0 z-70 flex w-[80%] max-w-sm flex-col gap-10 border-l p-6 lg:hidden"
             >
               <div className="flex items-center justify-between">
-                <Image src={logo} alt="AJIX" width={34} height={30} className="h-auto w-32" />
+                <Link href="/" aria-label="AJIX — Home" className={cn('inline-flex')}>
+                  <Image src={logo} alt="AJIX" width={34} height={30} className="h-auto w-32" />
+                </Link>
+
                 <button
                   type="button"
                   onClick={() => setIsMobileMenuOpen(false)}
