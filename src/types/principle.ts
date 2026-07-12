@@ -3,4 +3,5 @@ export interface Principle {
   step: number;
   title: string;
   description: string;
+  badgeLabel?: string;
 }

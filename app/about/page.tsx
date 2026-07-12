@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { AboutHero } from '@/components/sections/about/hero/aboutHero';
+import { MyJourney } from '@/components/sections/about/journey/myJourney';
 
 export const metadata: Metadata = {
   title: 'About',
@@ -11,6 +12,7 @@ export default function AboutPage() {
   return (
     <>
       <AboutHero />
+      <MyJourney />
     </>
   );
 }

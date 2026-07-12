@@ -68,7 +68,7 @@ export function PrincipleTimeline({ principles }: PrincipleTimelineProps) {
                 ease: 'easeOut',
               }}
             >
-              <GlowBadge>{`Step ${principle.step}`}</GlowBadge>
+              <GlowBadge>{principle.badgeLabel ?? `Step ${principle.step}`}</GlowBadge>
               <h3 className="font-heading text-foreground mt-3 text-base font-semibold">
                 {principle.title}
               </h3>
