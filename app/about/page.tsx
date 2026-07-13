@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { AboutHero } from '@/components/sections/about/hero/aboutHero';
 import { MyJourney } from '@/components/sections/about/journey/myJourney';
 import { BeyondTheDesign } from '@/components/sections/about/grid/beyondTheDesign';
+import { MyProcess } from '@/components/sections/about/process/myProcess';
 
 export const metadata: Metadata = {
   title: 'About',
@@ -15,6 +16,7 @@ export default function AboutPage() {
       <AboutHero />
       <MyJourney />
       <BeyondTheDesign />
+      <MyProcess />
     </>
   );
 }

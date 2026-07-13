@@ -4,9 +4,12 @@ import {
   LayoutGrid,
   Sparkles,
   Users,
-  PenTool,
   ClipboardCheck,
   Accessibility,
+  Search,
+  Target,
+  PenTool,
+  Rocket,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -22,6 +25,10 @@ export const iconMap = {
   'wireframing-prototyping': PenTool,
   'usability-testing': ClipboardCheck,
   accessibility: Accessibility,
+  'process-understand': Search,
+  'process-define': Target,
+  'process-design': PenTool,
+  'process-validate': Rocket,
 } satisfies Record<string, LucideIcon>;
 
 export type IconKey = keyof typeof iconMap;
