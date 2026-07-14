@@ -10,6 +10,12 @@ import {
   Target,
   PenTool,
   Rocket,
+  Waypoints,
+  Zap,
+  ListTree,
+  Accessibility as AccessibilityIcon, // "accessibility" key already exists from Phase 7 — aliased to avoid collision
+  Component,
+  Inbox,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -29,6 +35,12 @@ export const iconMap = {
   'process-define': Target,
   'process-design': PenTool,
   'process-validate': Rocket,
+  'impact-user-flows': Waypoints,
+  'impact-workflows': Zap,
+  'impact-information-architecture': ListTree,
+  'impact-accessibility': AccessibilityIcon,
+  'impact-design-systems': Component,
+  'impact-lead-response': Inbox,
 } satisfies Record<string, LucideIcon>;
 
 export type IconKey = keyof typeof iconMap;

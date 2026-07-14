@@ -59,6 +59,18 @@
 
   --animate-card-spin: card-spin 14s linear infinite;
   --animate-twinkle: twinkle 3s ease-in-out infinite;
+
+  --animate-morph-slow: spin 12s linear infinite;
+  --animate-morph-slow-reverse: spin-reverse 16s linear infinite;
+  --animate-morph-medium: spin 9s linear infinite;
+
+  --animate-core-spin: orbit-rotate 22s linear infinite;
+}
+
+@keyframes spin-reverse {
+  to {
+    transform: rotate(-360deg);
+  }
 }
 
 @keyframes orbit-rotate {

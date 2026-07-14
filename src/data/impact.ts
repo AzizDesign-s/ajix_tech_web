@@ -1,0 +1,58 @@
+import { ImpactMetric } from '@/types/impact';
+
+export const impactMetrics: ImpactMetric[] = [
+  {
+    id: 'user-flows',
+    number: '01',
+    icon: 'impact-user-flows',
+    value: 90,
+    suffix: '%',
+    title: 'Simplified User Flows',
+    description: 'Reduce unnecessary steps and make every interaction intuitive.',
+  },
+  {
+    id: 'workflows',
+    number: '02',
+    icon: 'impact-workflows',
+    value: 95,
+    suffix: '%',
+    title: 'Efficient Workflows',
+    description: 'Design interfaces that help users complete actions more quickly.',
+  },
+  {
+    id: 'information-architecture',
+    number: '03',
+    icon: 'impact-information-architecture',
+    value: 98,
+    suffix: '%',
+    title: 'Clear Information Architecture',
+    description: 'Help users find what they need without confusion.',
+  },
+  {
+    id: 'accessibility',
+    number: '04',
+    icon: 'impact-accessibility',
+    value: 100,
+    suffix: '%',
+    title: 'Accessibility by Default',
+    description: 'Create experiences that work for users of all abilities.',
+  },
+  {
+    id: 'design-systems',
+    number: '05',
+    icon: 'impact-design-systems',
+    value: 100,
+    suffix: '%',
+    title: 'Design Systems',
+    description: 'Reusable components ensure consistency across every screen.',
+  },
+  {
+    id: 'lead-response',
+    number: '06',
+    icon: 'impact-lead-response',
+    value: 40,
+    suffix: '%',
+    title: 'Faster Lead Response',
+    description: 'Unified lead inbox replaced manual follow-ups across the sales team.',
+  },
+];
