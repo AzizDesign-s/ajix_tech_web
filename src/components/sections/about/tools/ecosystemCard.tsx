@@ -9,7 +9,7 @@ export function EcosystemCard({ category }: EcosystemCardProps) {
   const tools = getToolsBySlug(category.toolSlugs);
 
   return (
-    <div className="border-border bg-card/60 w-full max-w-[220px] rounded-2xl border p-4 backdrop-blur-sm sm:max-w-[240px]">
+    <div className="border-border bg-card/60 w-full max-w-full rounded-2xl border p-4 backdrop-blur-sm sm:max-w-60">
       <p className="text-cyan mb-3 text-xs font-semibold tracking-wide uppercase">
         {category.label}
       </p>

@@ -5,6 +5,7 @@ import { BeyondTheDesign } from '@/components/sections/about/grid/beyondTheDesig
 import { MyProcess } from '@/components/sections/about/process/myProcess';
 import { ProductImpact } from '@/components/sections/about/impact/productImpact';
 import { TheEcosystem } from '@/components/sections/about/tools/theEcosystem';
+import { CTA } from '@/components/sections/home/cta/cta';
 
 export const metadata: Metadata = {
   title: 'About',
@@ -21,6 +22,7 @@ export default function AboutPage() {
       <MyProcess />
       <ProductImpact />
       <TheEcosystem />
+      <CTA />
     </>
   );
 }

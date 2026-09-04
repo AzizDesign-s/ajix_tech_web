@@ -28,7 +28,7 @@ export function TheEcosystem() {
 
       {/* Desktop: radial layout with connectors */}
       <div className="relative z-10 mt-16 hidden w-full max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-x-16 lg:grid">
-        <div className="flex flex-col gap-24">
+        <div className="flex flex-col gap-24 sm:items-center">
           <div className="relative">
             <EcosystemCard category={topLeft} />
           </div>
@@ -39,7 +39,7 @@ export function TheEcosystem() {
 
         <AICore />
 
-        <div className="flex flex-col gap-24">
+        <div className="flex flex-col gap-24 sm:items-center">
           <div className="relative">
             <EcosystemCard category={topRight} />
           </div>
