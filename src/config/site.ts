@@ -33,7 +33,9 @@ export const socials = {
 // Routes that exist only as "coming soon" placeholders. They are excluded from
 // the sitemap and marked noindex so Google doesn't index empty pages. Delete an
 // entry here the moment that page ships real content.
-export const placeholderRoutes = ['/projects', '/contact'];
+// /contact was removed when the Contact page shipped — it is now indexable and
+// listed in the sitemap.
+export const placeholderRoutes = ['/projects'];
 
 // Project detail pages (/projects/[slug]) are not built yet, so linking a card
 // to its slug would 404. Flip this to true when those routes exist and every

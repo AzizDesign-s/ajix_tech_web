@@ -8,8 +8,9 @@ import { FooterWordmark } from '@/components/layout/Footer/footerWordmark';
 import { FooterGrid } from '@/components/layout/Footer/footerGrid';
 import { BackToTop } from '@/components/layout/Footer/backToTop';
 import { siteConfig, navLinks, socials } from '@/config/site';
+import type { SiteTheme } from '@/types/theme';
 
-export function Footer() {
+export function Footer({ theme = 'dark' }: { theme?: SiteTheme }) {
   // Evaluated on the server at build time. Previously this ran in a Client
   // Component on a statically prerendered page, which could disagree with the
   // prerendered HTML across a year boundary and warn about a hydration mismatch.
@@ -17,13 +18,13 @@ export function Footer() {
 
   return (
     <footer className="border-border bg-background relative overflow-hidden border-t">
-      <FooterGrid />
+      <FooterGrid theme={theme} />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 py-10 md:px-10">
         {/* Top row — logo, nav, availability, socials */}
         <div className="border-border/60 flex flex-col items-center gap-8 border-b pb-4 md:flex-row md:items-center md:justify-between">
           <div className="flex flex-wrap items-center justify-center gap-8">
-            <Logo />
+            <Logo theme={theme} />
             <nav aria-label="Footer">
               <ul className="flex flex-wrap items-center justify-center gap-6">
                 {navLinks.map((link) => (
@@ -63,7 +64,7 @@ export function Footer() {
         </div>
 
         {/* Giant reveal wordmark */}
-        <FooterWordmark />
+        <FooterWordmark theme={theme} />
 
         {/* Bottom row — copyright + back to top */}
         <div className="flex flex-col items-center gap-4 pt-4 text-center md:flex-row md:justify-between md:text-left">

@@ -23,6 +23,15 @@ export function getPersonJsonLd() {
       addressCountry: 'AE',
     },
     sameAs: Object.values(socials).filter(Boolean),
+    // Factual and already published on the Contact page. No invented phone
+    // numbers, no fabricated hours.
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'Business enquiries',
+      email: siteConfig.email,
+      areaServed: 'AE',
+      availableLanguage: ['English'],
+    },
     knowsAbout: [
       'UI/UX Design',
       'Frontend Development',
@@ -60,6 +69,20 @@ export function getProfilePageJsonLd() {
     '@id': `${siteConfig.url}/about#profilepage`,
     url: `${siteConfig.url}/about`,
     name: `About ${siteConfig.fullName}`,
+    isPartOf: { '@id': `${siteConfig.url}/#website` },
+    mainEntity: { '@id': `${siteConfig.url}/#person` },
+  };
+}
+
+// ContactPage marks /contact as the page carrying contact details for the
+// Person above, which is exactly what this schema type is for.
+export function getContactPageJsonLd() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ContactPage',
+    '@id': `${siteConfig.url}/contact#contactpage`,
+    url: `${siteConfig.url}/contact`,
+    name: `Contact ${siteConfig.fullName}`,
     isPartOf: { '@id': `${siteConfig.url}/#website` },
     mainEntity: { '@id': `${siteConfig.url}/#person` },
   };

@@ -16,10 +16,9 @@ export function GradientText({ children, className }: GradientTextProps) {
         'animate-gradient-shift bg-size-[200%_auto] bg-clip-text text-transparent',
         className,
       )}
-      style={{
-        backgroundImage:
-          'linear-gradient(90deg, var(--color-cyan), var(--color-primary), var(--color-violet), var(--color-cyan))',
-      }}
+      // Themed token rather than literal stops: the light theme substitutes a
+      // legible gradient, since cyan on white is only 1.75:1.
+      style={{ backgroundImage: 'var(--background-image-gradient-text)' }}
     >
       {children}
     </span>

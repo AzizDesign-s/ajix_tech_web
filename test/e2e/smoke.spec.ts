@@ -1,6 +1,6 @@
 import { test, expect, type ConsoleMessage, type Page } from '@playwright/test';
 
-const ROUTES = ['/', '/about'] as const;
+const ROUTES = ['/', '/about', '/contact'] as const;
 
 /** Collects console errors and page errors, ignoring noise we do not control. */
 function collectErrors(page: Page) {

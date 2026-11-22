@@ -15,9 +15,14 @@ export function ImpactCard({ metric }: ImpactCardProps) {
   return (
     <motion.div variants={fadeUp} className="h-full">
       <SpotlightCard>
-        {/* Ghost index number */}
+        {/* Ghost index number. Pure decoration: a 5%-opacity watermark behind
+            the card, already hidden from assistive tech. WCAG 1.4.3 exempts
+            incidental and decorative text from contrast requirements, but
+            axe-core cannot infer intent — data-decorative marks it explicitly
+            and the accessibility suite excludes those nodes. */}
         <span
           aria-hidden="true"
+          data-decorative="true"
           className="font-heading text-foreground/5 absolute -top-10 right-0 text-8xl font-bold select-none"
         >
           {metric.number}

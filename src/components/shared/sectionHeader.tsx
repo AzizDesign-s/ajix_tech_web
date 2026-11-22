@@ -11,6 +11,10 @@ interface SectionHeaderProps {
   align?: 'left' | 'center' | 'right';
   action?: ReactNode; // e.g. "View All Projects" button
   className?: string;
+  /** Optional id on the <h2>, so a control elsewhere can be labelled by it
+   *  (the Contact page's radiogroup uses this). Additive — omitting it leaves
+   *  every existing call site exactly as it was. */
+  titleId?: string;
 }
 
 const lineVariants: Variants = {
@@ -25,6 +29,7 @@ export function SectionHeader({
   align = 'left',
   action,
   className,
+  titleId,
 }: SectionHeaderProps) {
   const isCenter = align === 'center';
   const isRight = align === 'right';
@@ -55,14 +60,21 @@ export function SectionHeader({
                 className="bg-gradient-primary h-px w-8"
               />
             )}
+            {/* The colour is static and the reveal is opacity-only.
+                Animating `color` meant the eyebrow sat at --color-muted until
+                it scrolled into view, which measures 4.2:1 over the CTA
+                section's brighter gradient and fails WCAG 1.4.3. Animating
+                colour also forces a repaint on every frame, where opacity is
+                handled by the compositor. */}
             <motion.span
               variants={{
-                hidden: { color: 'rgba(255, 255, 255, 0.8)' }, // was var(--color-muted) — too low contrast over glow
+                hidden: { opacity: 0 },
                 visible: {
-                  color: 'var(--color-cyan)',
+                  opacity: 1,
                   transition: { delay: 0.5, duration: 0.4, ease: 'easeOut' },
                 },
               }}
+              style={{ color: 'var(--color-eyebrow)' }}
               className="text-xs font-semibold tracking-widest uppercase"
             >
               {eyebrow}
@@ -77,7 +89,10 @@ export function SectionHeader({
           </div>
         )}
 
-        <h2 className="font-heading text-foreground text-3xl font-semibold tracking-tight md:text-4xl">
+        <h2
+          id={titleId}
+          className="font-heading text-foreground text-3xl font-semibold tracking-tight md:text-4xl"
+        >
           {title}
         </h2>
         {description && <p className="text-muted text-base leading-relaxed">{description}</p>}

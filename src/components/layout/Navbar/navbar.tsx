@@ -8,16 +8,22 @@ import { Menu, X } from 'lucide-react';
 import { ResumeButton } from '@/components/shared/resumeButton';
 import { AvailabilityBadge } from '@/components/shared/availabilityBadge';
 import { navLinks } from '@/config/site';
+import type { SiteTheme } from '@/types/theme';
 import { cn } from '@/lib/utils/cn';
 
 const MOBILE_MENU_ID = 'mobile-navigation-drawer';
 
-export function Navbar() {
+const LOGO_SRC: Record<SiteTheme, string> = {
+  dark: '/logo/ajix-full-dark.svg',
+  light: '/logo/ajix-full-light.svg',
+};
+
+export function Navbar({ theme = 'dark' }: { theme?: SiteTheme }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
-  const logo = '/logo/ajix-full-dark.svg';
+  const logo = LOGO_SRC[theme];
 
   // Adds a shadow once the user scrolls, so the floating navbar
   // visually separates from the content behind it.

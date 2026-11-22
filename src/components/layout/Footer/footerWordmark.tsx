@@ -2,10 +2,16 @@
 
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import type { SiteTheme } from '@/types/theme';
 
-const logo = '/logo/ajix-full-dark.svg';
+const LOGO_SRC: Record<SiteTheme, string> = {
+  dark: '/logo/ajix-full-dark.svg',
+  light: '/logo/ajix-full-light.svg',
+};
 
-export function FooterWordmark() {
+export function FooterWordmark({ theme = 'dark' }: { theme?: SiteTheme }) {
+  const logo = LOGO_SRC[theme];
+
   return (
     <div className="flex flex-col items-center gap-4 py-10">
       {/* Wipe reveal — clips left-to-right as it scrolls into view */}

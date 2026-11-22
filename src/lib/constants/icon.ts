@@ -16,6 +16,9 @@ import {
   Accessibility as AccessibilityIcon, // "accessibility" key already exists from Phase 7 — aliased to avoid collision
   Component,
   Inbox,
+  Briefcase,
+  Handshake,
+  Hand,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -41,6 +44,11 @@ export const iconMap = {
   'impact-accessibility': AccessibilityIcon,
   'impact-design-systems': Component,
   'impact-lead-response': Inbox,
+  // Contact page — "What brings you here?" intents
+  'intent-hire': Briefcase,
+  'intent-project': Rocket,
+  'intent-collaborate': Handshake,
+  'intent-hello': Hand,
 } satisfies Record<string, LucideIcon>;
 
 export type IconKey = keyof typeof iconMap;

@@ -2,8 +2,6 @@ import type { Metadata, Viewport } from 'next';
 import { Amiri, Public_Sans } from 'next/font/google';
 import './globals.css';
 import { siteConfig } from '@/config/site';
-import { Navbar } from '@/components/layout/Navbar/navbar';
-import { Footer } from '@/components/layout/Footer/footer';
 import { PersonJsonLd } from '@/components/shared/JsonLd';
 import { MotionProvider } from '@/components/shared/motionProvider';
 import { Analytics } from '@/components/shared/analytics';
@@ -92,11 +90,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`dark ${amiri.variable} ${publicSans.variable}`}
-      suppressHydrationWarning
-    >
+    <html lang="en" className={`${amiri.variable} ${publicSans.variable}`} suppressHydrationWarning>
       <body className="antialiased">
         <PersonJsonLd />
         {/* Keyboard users land here first and can jump straight past the
@@ -107,11 +101,9 @@ export default function RootLayout({
         >
           Skip to main content
         </a>
-        <MotionProvider>
-          <Navbar />
-          <main id="main-content">{children}</main>
-          <Footer />
-        </MotionProvider>
+        {/* Navbar, <main> and Footer are rendered by the route-group layouts
+            (app/(dark) and app/(light)) so each group supplies its own theme. */}
+        <MotionProvider>{children}</MotionProvider>
         <Analytics />
       </body>
     </html>

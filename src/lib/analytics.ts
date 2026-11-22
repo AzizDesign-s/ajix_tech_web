@@ -5,7 +5,24 @@
 // Naming convention: snake_case verb_noun, matching GA4's recommended-event
 // style. Keep new events in this union so the list stays reviewable.
 export type AnalyticsEvent =
-  'cta_click' | 'resume_download' | 'project_click' | 'social_click' | 'email_copy' | 'nav_click';
+  | 'cta_click'
+  | 'resume_download'
+  | 'project_click'
+  | 'social_click'
+  | 'email_copy'
+  | 'nav_click'
+  // Contact page
+  | 'contact_page_view'
+  | 'contact_intent_select'
+  | 'contact_form_start'
+  | 'contact_form_error'
+  | 'contact_form_submit'
+  | 'generate_lead'
+  | 'contact_email_click'
+  | 'contact_whatsapp_click'
+  | 'contact_linkedin_click'
+  | 'contact_booking_click'
+  | 'contact_resume_download';
 
 type GtagParams = Record<string, string | number | boolean | undefined>;
 

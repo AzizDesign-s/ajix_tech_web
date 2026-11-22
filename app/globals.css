@@ -20,6 +20,20 @@
   --color-ring: #22d3ee;
   --color-muted-foreground: #94a3b8;
 
+  /* Text that sits on a brand-accent background (gradient/solid buttons).
+     Identical to --color-foreground in the dark theme, so nothing changes
+     there; in the light theme it stays white instead of flipping to near-black
+     on top of a blue gradient. */
+  --color-on-accent: #ffffff;
+
+  /* Semantic accent for section eyebrows. Cyan on dark; cyan only reaches
+     1.75:1 on the light background, so the light theme substitutes primary. */
+  --color-eyebrow: #22d3ee;
+
+  /* Hairline grid used by GridBackground. Hardcoded rgba before, which made it
+     a dark-blue grid on any surface. */
+  --color-grid-line: rgba(50, 57, 103, 0.3);
+
   --color-success: #22c55e;
   --color-warning: #f59e0b;
   --color-danger: #ef4444;
@@ -38,6 +52,10 @@
     rgba(1, 4, 14, 0.6) 0%,
     rgba(3, 16, 50, 0.6) 100%
   );
+  /* Gradient used for emphasised headline text. Cyan is legible on the dark
+     surface; the light theme swaps it out because cyan only reaches 1.75:1
+     on white. */
+  --background-image-gradient-text: linear-gradient(90deg, #22d3ee, #2563eb, #4f46e5, #22d3ee);
 
   /* ── Fonts (wired to the CSS variables set in layout.tsx) ── */
   --font-heading: var(--font-amiri);
@@ -221,6 +239,56 @@
   }
 }
 
+/* ──────────────────────────────────────────────────────────────────────────
+   LIGHT THEME
+   Scoped re-declaration of the colour tokens. Tailwind v4 compiles token
+   utilities as var() references (.bg-background { background-color:
+   var(--color-background) }), so overriding the variables on this subtree
+   re-themes every component inside it without touching a single component.
+   The dark pages are not affected: they never match this selector.
+   ────────────────────────────────────────────────────────────────────────── */
+[data-theme='light'] {
+  --color-background: #fbfbfd; /* warm pearl white */
+  --color-card: #ffffff;
+  --color-border: #e4e7ef;
+  --color-foreground: #000614; /* the ink from ajix-icon-light.svg — 19.6:1 */
+  --color-muted: #5a6478; /* muted charcoal — 5.8:1 */
+  --color-muted-foreground: #5a6478;
+  --color-ring: #2563eb;
+
+  /* Brand accents are deliberately unchanged, except the eyebrow, which fails
+     contrast in cyan on a white background. */
+  --color-eyebrow: #2563eb;
+  --color-grid-line: rgba(100, 116, 160, 0.16);
+  --background-image-gradient-text: linear-gradient(90deg, #2563eb, #4f46e5, #7c3aed, #2563eb);
+
+  /* Surfaces: the dark theme's near-black gradients become soft neutrals. */
+  --background-image-gradient-surface: linear-gradient(315deg, #ffffff 0%, #f3f5fa 100%);
+  --background-image-gradient-nav: linear-gradient(
+    315deg,
+    rgba(255, 255, 255, 0.72) 0%,
+    rgba(243, 245, 250, 0.72) 100%
+  );
+
+  /* Depth: glows read as smudges on white, so they become diffused neutral
+     shadows with a faint brand tint. */
+  --shadow-card: 0 1px 2px rgba(10, 20, 50, 0.04), 0 8px 24px rgba(10, 20, 50, 0.06);
+  --shadow-glow-blue: 0 8px 32px rgba(37, 99, 235, 0.14);
+  --shadow-glow-cyan: 0 8px 32px rgba(34, 211, 238, 0.12);
+  --shadow-glow-violet: 0 8px 32px rgba(79, 70, 229, 0.14);
+
+  color-scheme: light;
+}
+
+/* The page background is painted by <body>, which sits outside the themed
+   wrapper. Without this, rubber-band overscroll on a light route would reveal
+   the dark navy underneath. :has() is below the declared browserslist floor
+   (Chrome 91); on an older engine the only symptom is a dark overscroll
+   gutter — the page itself is unaffected. */
+body:has([data-theme='light']) {
+  background-color: #fbfbfd;
+}
+
 html {
   overflow-x: hidden;
 }
@@ -306,4 +374,106 @@ body {
 .hero-reveal-scale {
   animation: hero-reveal-scale 800ms cubic-bezier(0, 0, 0.2, 1) backwards;
   animation-delay: var(--reveal-delay, 0ms);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   CONTACT PAGE
+   All transform/opacity only, so the compositor handles them and the main
+   thread stays free. The global prefers-reduced-motion block above already
+   neutralises every one of these.
+   ────────────────────────────────────────────────────────────────────────── */
+
+@keyframes aira-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -14px, 0);
+  }
+}
+
+.aira-drift {
+  animation: aira-drift 9s ease-in-out infinite;
+}
+
+@keyframes aira-rings {
+  0%,
+  100% {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.035);
+  }
+}
+
+.aira-rings {
+  transform-origin: 220px 152px;
+  animation: aira-rings 7s ease-in-out infinite;
+}
+
+@keyframes aira-core {
+  0%,
+  100% {
+    opacity: 0.85;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.aira-core {
+  animation: aira-core 4.5s ease-in-out infinite;
+}
+
+/* Floating cards. Each card sets --float-delay and --float-distance so no two
+   drift in lockstep, which is what stops the group reading as one rigid block. */
+@keyframes card-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, var(--float-distance, -12px), 0);
+  }
+}
+
+.card-float {
+  animation: card-float var(--float-duration, 7s) ease-in-out infinite;
+  animation-delay: var(--float-delay, 0s);
+}
+
+/* Pointer parallax. One listener on the section writes --pointer-x/y; each
+   card multiplies them by its own depth. No per-card listeners, no layout
+   reads, and the whole thing is inert on touch (see the media query below). */
+.parallax-layer {
+  transform: translate3d(
+    calc(var(--pointer-x, 0) * var(--depth, 0) * 1px),
+    calc(var(--pointer-y, 0) * var(--depth, 0) * 1px),
+    0
+  );
+  transition: transform 400ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (hover: none), (pointer: coarse) {
+  .parallax-layer {
+    transform: none;
+  }
+}
+
+/* Connector lines draw themselves in once, then stay. */
+@keyframes connector-draw {
+  from {
+    stroke-dashoffset: var(--dash, 400);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.connector-line {
+  stroke-dasharray: var(--dash, 400);
+  animation: connector-draw 1.6s ease-out 0.5s backwards;
 }

@@ -10,11 +10,11 @@ const buttonVariants = cva(
       variant: {
         // Row 1 in your screenshot — gradient, glowing
         gradient:
-          'bg-gradient-secondary text-foreground hover:shadow-[0_0_40px_-6px_var(--color-primary)] hover:brightness-110 shadow-[0_0_30px_-8px_var(--color-primary)]',
+          'bg-gradient-secondary text-on-accent hover:shadow-[0_0_40px_-6px_var(--color-primary)] hover:brightness-110 shadow-[0_0_30px_-8px_var(--color-primary)]',
         // Row 2 — dark surface, bordered, subtle
         surface: 'border border-border bg-gradient-surface text-foreground hover:bg-card',
         // Row 3 — solid brand blue
-        primary: 'bg-primary text-foreground hover:bg-blue-light',
+        primary: 'bg-primary text-on-accent hover:bg-blue-light',
       },
       size: {
         sm: 'h-9 px-4 text-sm rounded-md',
@@ -35,6 +35,10 @@ interface ButtonBaseProps extends VariantProps<typeof buttonVariants> {
   className?: string;
   href?: string; // if provided, renders as a Link instead of <button>
   download?: boolean;
+  /** Anchor-only; meaningful when `href` is set. Typed here because the base
+   *  props otherwise describe a <button>, which has no target/rel. */
+  target?: string;
+  rel?: string;
 }
 
 type ButtonProps = ButtonBaseProps & Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'>;
@@ -47,6 +51,8 @@ export function Button({
   size,
   className,
   href,
+  target,
+  rel,
   type,
   ...props
 }: ButtonProps) {
@@ -73,7 +79,14 @@ export function Button({
     // had no accessible name at all.
     const anchorProps = props as unknown as AnchorHTMLAttributes<HTMLAnchorElement>;
     return (
-      <Link href={href} download={download} className={classes} {...anchorProps}>
+      <Link
+        href={href}
+        download={download}
+        target={target}
+        rel={rel}
+        className={classes}
+        {...anchorProps}
+      >
         {content}
       </Link>
     );
