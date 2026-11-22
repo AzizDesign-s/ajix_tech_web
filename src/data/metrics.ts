@@ -11,7 +11,7 @@ export const siteMetrics: SiteMetric[] = [
 
 export const heroMetrics: HeroMetric[] = [
   { id: 'digital-products', value: 10, suffix: '+', label: 'Digital Products Designed' },
-  { id: 'years-experience', value: 4, suffix: '+', label: 'years of Experience' },
+  { id: 'years-experience', value: 4, suffix: '+', label: 'Years of Experience' },
   { id: 'enterprise-projects', value: 8, suffix: '+', label: 'Enterprise Projects' },
   { id: 'industries-served', value: 3, suffix: '+', label: 'Industries Served' },
 ];

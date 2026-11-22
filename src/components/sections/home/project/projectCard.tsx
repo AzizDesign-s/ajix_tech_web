@@ -5,10 +5,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { getToolsBySlug } from '@/lib/services/tools';
 import { dotColorClass } from '@/lib/constants/categoryClasses';
-// import { getAllCategories, getCategoryLabel } from '@/lib/services/categories';
 import { getCategoryLabel, getCategoryColor } from '@/lib/services/categories';
 import { isInteractiveProject, type Project } from '@/types/project';
+import { projectDetailPagesEnabled } from '@/config/site';
 import { cn } from '@/lib/utils/cn';
+import { trackEvent } from '@/lib/analytics';
 
 interface ProjectCardProps {
   project: Project;
@@ -16,32 +17,45 @@ interface ProjectCardProps {
 
 export function ProjectCard({ project }: ProjectCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
+  // Cached on enter instead of read on every mousemove — getBoundingClientRect()
+  // forces a synchronous layout, and firing it per pointer event was the main
+  // source of layout thrashing in this card.
+  const rectRef = useRef<DOMRect | null>(null);
   const tools = getToolsBySlug(project.toolSlugs);
-
-  //   const categoryColor =
-  //     getAllCategories().find((c) => c.slug === project.category)?.color ?? 'primary';
 
   const categoryColor = getCategoryColor(project.category);
 
-  function handleMouseMove(e: MouseEvent<HTMLDivElement>) {
-    const rect = cardRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    cardRef.current?.style.setProperty('--spot-x', `${e.clientX - rect.left}px`);
-    cardRef.current?.style.setProperty('--spot-y', `${e.clientY - rect.top}px`);
+  function handleMouseEnter() {
+    rectRef.current = cardRef.current?.getBoundingClientRect() ?? null;
   }
 
-  const href = isInteractiveProject(project) ? project.liveUrl : `/projects/${project.slug}`;
-  const isExternal = isInteractiveProject(project);
+  function handleMouseMove(e: MouseEvent<HTMLDivElement>) {
+    const rect = rectRef.current;
+    if (!rect || !cardRef.current) return;
+    cardRef.current.style.setProperty('--spot-x', `${e.clientX - rect.left}px`);
+    cardRef.current.style.setProperty('--spot-y', `${e.clientY - rect.top}px`);
+  }
 
-  return (
-    <Link
-      href={href || '#'}
-      target={isExternal ? '_blank' : undefined}
-      rel={isExternal ? 'noopener noreferrer' : undefined}
-      className="group focus-visible:ring-primary relative block overflow-hidden rounded-2xl p-px focus-visible:ring-2 focus-visible:outline-none"
-      aria-label={`View ${project.name}`}
-    >
-      {/* Rotating gradient border — contained to the 1px ring via p-px above */}
+  // Interactive projects open their live site; everything else would point at a
+  // /projects/[slug] detail page, which does not exist yet. Rather than render a
+  // link that 404s (or an empty href="#" that opens a blank tab), the card drops
+  // its link wrapper until there is somewhere real to go. Flip
+  // projectDetailPagesEnabled in config/site.ts once those routes ship.
+  const isExternal = isInteractiveProject(project);
+  const href = isExternal
+    ? project.liveUrl
+    : projectDetailPagesEnabled
+      ? `/projects/${project.slug}`
+      : '';
+  const isLinked = Boolean(href);
+
+  const shellClasses = cn(
+    'group relative block overflow-hidden rounded-2xl p-px',
+    isLinked && 'focus-visible:ring-primary focus-visible:ring-2 focus-visible:outline-none',
+  );
+
+  const cardBody = (
+    <>
       {/* Base border — always visible */}
       <span aria-hidden="true" className="border-border absolute inset-0 rounded-2xl border" />
 
@@ -60,6 +74,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
       <div className="bg-gradient-surface relative overflow-hidden rounded-2xl">
         <div
           ref={cardRef}
+          onMouseEnter={handleMouseEnter}
           onMouseMove={handleMouseMove}
           className="bg-card/60 relative overflow-hidden rounded-2xl p-5 backdrop-blur-xl"
         >
@@ -96,57 +111,63 @@ export function ProjectCard({ project }: ProjectCardProps) {
                 src={project.image}
                 alt={project.name}
                 fill
-                sizes="(max-width: 768px) 100vw, 50vw"
+                sizes="(max-width: 768px) 92vw, (max-width: 1280px) 46vw, 600px"
                 className="pointer-events-none object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
               />
             </div>
 
             <h3 className="font-heading text-foreground text-xl font-semibold md:text-2xl">
               {project.name}
+              {isLinked && isExternal && <span className="sr-only"> (opens in a new tab)</span>}
             </h3>
             <p className="text-muted mt-2 text-sm leading-relaxed">{project.description}</p>
 
             {/* Tool icons — reveal true brand color on card hover */}
             <div className="mt-4 flex items-center gap-2">
-              {tools.map((tool) =>
-                tool.type === 'icon' ? (
-                  <div
-                    key={tool.slug}
-                    title={tool.label}
-                    className="border-border bg-card relative flex h-9 w-9 items-center justify-center rounded-md border"
-                  >
+              {tools.map((tool) => (
+                <div
+                  key={tool.slug}
+                  title={tool.label}
+                  className="border-border bg-card relative flex h-9 w-9 items-center justify-center rounded-md border"
+                >
+                  {tool.type === 'icon' ? (
                     <Image
-                      src={`https://cdn.simpleicons.org/${tool.slug}/94a3b8`}
+                      src={`/icons/tools/${tool.slug}.svg`}
                       alt={tool.label}
                       width={16}
                       height={16}
-                      unoptimized
-                      className="absolute h-4 w-4 object-contain transition-opacity duration-300 group-hover:opacity-0"
+                      className="tool-icon h-4 w-4 object-contain"
                     />
-                    <Image
-                      src={`https://cdn.simpleicons.org/${tool.slug}`}
-                      alt=""
-                      aria-hidden="true"
-                      width={16}
-                      height={16}
-                      unoptimized
-                      className="absolute h-4 w-4 object-contain opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                    />
-                  </div>
-                ) : (
-                  <div
-                    key={tool.slug}
-                    title={tool.label}
-                    className="border-border bg-card text-muted group-hover:text-primary flex h-9 w-9 items-center justify-center rounded-md border text-[12px] font-bold transition-colors duration-300"
-                  >
-                    {tool.badgeText}
-                  </div>
-                ),
-              )}
+                  ) : (
+                    <span className="text-muted group-hover:text-primary text-[12px] font-bold transition-colors duration-300">
+                      {tool.badgeText}
+                    </span>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </div>
+    </>
+  );
+
+  // No aria-label here: the card's visible content (category, name, description)
+  // already forms the accessible name. An aria-label that omitted that text was
+  // failing WCAG 2.5.3 "Label in Name" on every card.
+  if (!isLinked) {
+    return <div className={shellClasses}>{cardBody}</div>;
+  }
+
+  return (
+    <Link
+      href={href}
+      target={isExternal ? '_blank' : undefined}
+      rel={isExternal ? 'noopener noreferrer' : undefined}
+      onClick={() => trackEvent('project_click', { project: project.slug, external: isExternal })}
+      className={shellClasses}
+    >
+      {cardBody}
     </Link>
   );
 }

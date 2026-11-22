@@ -4,7 +4,7 @@ export function ProductionShowcaseCard() {
   return (
     <div className="group border-border bg-card relative h-full min-h-105 w-full overflow-hidden rounded-3xl border p-6">
       <Image
-        src="/images/grid/production-showcase.png"
+        src="/images/grid/production-showcase.jpg"
         alt="From idea to production"
         fill
         sizes="(max-width: 1024px) 100vw, 50vw"

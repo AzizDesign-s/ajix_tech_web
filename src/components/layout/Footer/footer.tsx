@@ -1,22 +1,19 @@
-'use client';
-
 import Link from 'next/link';
 
-import { ArrowUp } from 'lucide-react';
 import { FaGithub, FaLinkedin, FaInstagram, FaBehance } from 'react-icons/fa6';
 import { Logo } from '@/components/shared/logo';
 import { AvailabilityBadge } from '@/components/shared/availabilityBadge';
 import { SocialLink } from '@/components/ui/socialLink';
 import { FooterWordmark } from '@/components/layout/Footer/footerWordmark';
 import { FooterGrid } from '@/components/layout/Footer/footerGrid';
+import { BackToTop } from '@/components/layout/Footer/backToTop';
 import { siteConfig, navLinks, socials } from '@/config/site';
 
 export function Footer() {
+  // Evaluated on the server at build time. Previously this ran in a Client
+  // Component on a statically prerendered page, which could disagree with the
+  // prerendered HTML across a year boundary and warn about a hydration mismatch.
   const year = new Date().getFullYear();
-
-  function scrollToTop() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
 
   return (
     <footer className="border-border bg-background relative overflow-hidden border-t">
@@ -25,21 +22,26 @@ export function Footer() {
       <div className="relative z-10 mx-auto max-w-7xl px-6 py-10 md:px-10">
         {/* Top row — logo, nav, availability, socials */}
         <div className="border-border/60 flex flex-col items-center gap-8 border-b pb-4 md:flex-row md:items-center md:justify-between">
-          <ul className="flex flex-wrap items-center justify-center gap-8">
-            <li>
-              <Logo />
-            </li>
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  className="text-foreground/70 hover:text-primary focus-visible:ring-primary rounded-md text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none"
-                >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <div className="flex flex-wrap items-center justify-center gap-8">
+            <Logo />
+            <nav aria-label="Footer">
+              <ul className="flex flex-wrap items-center justify-center gap-6">
+                {navLinks.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      // min-h-11 keeps the hit area at/above the 24px WCAG 2.5.8
+                      // minimum (and near the 44px comfort target) without
+                      // changing how the label looks.
+                      className="text-foreground/70 hover:text-primary focus-visible:ring-ring -mx-2 flex min-h-11 items-center rounded-md px-2 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
 
           <div className="flex flex-wrap items-center justify-center gap-4">
             <AvailabilityBadge />
@@ -68,15 +70,7 @@ export function Footer() {
           <p className="text-muted text-sm">
             © {year} {siteConfig.name}. All rights reserved.
           </p>
-          <button
-            type="button"
-            onClick={scrollToTop}
-            className="text-foreground/70 focus-visible:ring-primary hover:text-foreground flex items-center gap-2 rounded-md text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none"
-            aria-label="Scroll back to top"
-          >
-            Back to top
-            <ArrowUp size={14} />
-          </button>
+          <BackToTop />
         </div>
       </div>
     </footer>

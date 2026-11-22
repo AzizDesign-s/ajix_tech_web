@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { useInView, useMotionValue, useSpring } from 'framer-motion';
+import { useEffect, useRef } from 'react';
+import { animate, useReducedMotion } from 'framer-motion';
 
 interface AnimatedCounterProps {
   value: number;
@@ -9,29 +9,56 @@ interface AnimatedCounterProps {
   duration?: number; // seconds
 }
 
-// Counts up from 0 to `value` once it scrolls into view. Reusable
-// anywhere a number needs to animate in — metrics strips, stat cards.
+// Counts up to `value` once it scrolls into view.
+//
+// Two things changed from the previous implementation:
+//  1. The real number is rendered on the server. It used to render 0, so a
+//     crawler — or anyone whose JS failed — saw "0+ Years of Experience".
+//  2. The count is written straight to the DOM node instead of through React
+//     state, which previously triggered a re-render on every animation frame
+//     (~90 renders per counter, per animation).
 export function AnimatedCounter({ value, suffix = '', duration = 1.5 }: AnimatedCounterProps) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-80px' });
-  const motionValue = useMotionValue(0);
-  const springValue = useSpring(motionValue, { duration, bounce: 0 });
-  const [displayValue, setDisplayValue] = useState(0);
+  const numberRef = useRef<HTMLSpanElement>(null);
+  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
-    if (isInView) motionValue.set(value);
-  }, [isInView, value, motionValue]);
+    const el = numberRef.current;
+    // Reduced motion: leave the server-rendered final value in place.
+    if (!el || prefersReducedMotion || typeof IntersectionObserver === 'undefined') return;
 
-  useEffect(() => {
-    const unsubscribe = springValue.on('change', (latest) => {
-      setDisplayValue(Math.round(latest));
-    });
-    return unsubscribe;
-  }, [springValue]);
+    let stop: (() => void) | undefined;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        observer.disconnect(); // once only — no repeated triggers on re-entry
+        el.textContent = '0';
+        const controls = animate(0, value, {
+          duration,
+          ease: 'easeOut',
+          onUpdate: (latest) => {
+            el.textContent = String(Math.round(latest));
+          },
+          onComplete: () => {
+            el.textContent = String(value); // land exactly on the real number
+          },
+        });
+        stop = () => controls.stop();
+      },
+      { rootMargin: '-80px' },
+    );
+
+    observer.observe(el);
+
+    return () => {
+      observer.disconnect();
+      stop?.();
+    };
+  }, [value, duration, prefersReducedMotion]);
 
   return (
-    <span ref={ref}>
-      {displayValue}
+    <span>
+      <span ref={numberRef}>{value}</span>
       {suffix}
     </span>
   );

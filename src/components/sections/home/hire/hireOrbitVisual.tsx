@@ -8,15 +8,15 @@ import { Magnetic } from '@/components/shared/magnetic';
 
 const RING_SIZES = ['40%', '60%', '78%', '100%'];
 
-const ORBIT_TOOL_SLUGS = [
-  'figma',
-  'framer',
-  'github',
-  'react',
-  'vercel',
-  'tailwindcss',
-  'nextdotjs',
-  'typescript',
+const ORBIT_TOOLS = [
+  { slug: 'figma', label: 'Figma' },
+  { slug: 'framer', label: 'Framer' },
+  { slug: 'github', label: 'GitHub' },
+  { slug: 'react', label: 'React' },
+  { slug: 'vercel', label: 'Vercel' },
+  { slug: 'tailwindcss', label: 'Tailwind CSS' },
+  { slug: 'nextdotjs', label: 'Next.js' },
+  { slug: 'typescript', label: 'TypeScript' },
 ];
 
 const ORBIT_DURATION = 40; // seconds — outer ring
@@ -102,14 +102,21 @@ export function HireOrbitVisual({ className }: HireOrbitVisualProps) {
       </motion.div>
 
       {/* Outer ring — 8 orbiting tool icons, counter-rotated to stay upright */}
-      <motion.div
-        className="absolute"
-        style={{ width: RING_SIZES[3], height: RING_SIZES[3] }}
-        animate={{ rotate: 360 }}
-        transition={{ duration: ORBIT_DURATION, repeat: Infinity, ease: 'linear' }}
+      {/* The ring and each icon's counter-rotation were nine separate infinite
+          Framer Motion animations, all holding a JS animation loop open for the
+          life of the page. globals.css already defines both directions as CSS
+          keyframes (--animate-orbit / --animate-orbit-reverse), which run off
+          the main thread and are covered by the reduced-motion block. */}
+      <div
+        className="animate-orbit absolute"
+        style={{
+          width: RING_SIZES[3],
+          height: RING_SIZES[3],
+          animationDuration: `${ORBIT_DURATION}s`,
+        }}
       >
-        {ORBIT_TOOL_SLUGS.map((slug, i) => {
-          const angle = (360 / ORBIT_TOOL_SLUGS.length) * i;
+        {ORBIT_TOOLS.map(({ slug, label }, i) => {
+          const angle = (360 / ORBIT_TOOLS.length) * i;
           const x = 50 + 50 * Math.cos((angle * Math.PI) / 180);
           const y = 50 + 50 * Math.sin((angle * Math.PI) / 180);
           return (
@@ -119,25 +126,23 @@ export function HireOrbitVisual({ className }: HireOrbitVisualProps) {
               style={{ left: `${x}%`, top: `${y}%`, transform: 'translate(-50%, -50%)' }}
             >
               <Magnetic>
-                <motion.div
-                  className="border-border bg-card/80 flex h-10 w-10 items-center justify-center rounded-xl border backdrop-blur-md"
-                  animate={{ rotate: -360 }}
-                  transition={{ duration: ORBIT_DURATION, repeat: Infinity, ease: 'linear' }}
+                <div
+                  className="animate-orbit-reverse border-border bg-card/80 flex h-10 w-10 items-center justify-center rounded-xl border backdrop-blur-md"
+                  style={{ animationDuration: `${ORBIT_DURATION}s` }}
                 >
                   <Image
-                    src={`https://cdn.simpleicons.org/${slug}/94a3b8`}
-                    alt={slug}
+                    src={`/icons/tools/${slug}.svg`}
+                    alt={label}
                     width={18}
                     height={18}
-                    unoptimized
-                    className="h-4.5 w-4.5 object-contain"
+                    className="tool-icon-static h-4.5 w-4.5 object-contain"
                   />
-                </motion.div>
+                </div>
               </Magnetic>
             </div>
           );
         })}
-      </motion.div>
+      </div>
 
       <div className="bg-card shadow-glow-blue relative z-10 flex h-20 w-20 items-center justify-center rounded-full">
         <Magnetic>

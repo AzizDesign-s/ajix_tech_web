@@ -32,12 +32,12 @@ export function getAllAvailabilityStates(): AvailabilityState[] {
   return Object.values(availabilityStates);
 }
 
-// SINGLE SOURCE OF TRUTH — Navbar badge, Mobile Nav, Contact Hero pill, and
-// Contact's Availability section all read from this one constant via
-// getCurrentAvailability() below. Change this one value to update
-// availability everywhere at once. In a future CMS, this becomes a dynamic
-// value from Supabase — every consumer already goes through the function
-// below, so no component will need to change when that swap happens.
+// SINGLE SOURCE OF TRUTH. Every surface that shows availability — the navbar
+// badge, the mobile drawer, the footer and the About page's profile card —
+// renders <AvailabilityBadge />, which reads getCurrentAvailability() below.
+// Change this one value and all of them update together.
+// When this moves to Sanity, only getCurrentAvailability() needs to become
+// async; no consuming component changes.
 export const currentAvailabilityLevel: AvailabilityLevel = 'available';
 
 export function getCurrentAvailability(): AvailabilityState {

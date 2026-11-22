@@ -12,6 +12,10 @@ export const metadata: Metadata = {
   title: 'Abdul Aziz - UI/UX Designer',
   description:
     'Abdul Aziz — UI/UX Designer and Frontend Engineer crafting scalable digital products for startups, SaaS companies, and enterprise businesses across Dubai and the UAE.',
+  // Resolved against metadataBase in app/layout.tsx. Set per page rather than
+  // in the root layout, where it would be inherited and make every route
+  // claim "/" as its canonical.
+  alternates: { canonical: '/' },
 };
 
 export default function Home() {

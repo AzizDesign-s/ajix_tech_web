@@ -6,16 +6,19 @@ import { MyProcess } from '@/components/sections/about/process/myProcess';
 import { ProductImpact } from '@/components/sections/about/impact/productImpact';
 import { TheEcosystem } from '@/components/sections/about/tools/theEcosystem';
 import { CTA } from '@/components/sections/home/cta/cta';
+import { ProfilePageJsonLd } from '@/components/shared/JsonLd';
 
 export const metadata: Metadata = {
   title: 'About',
   description:
     'Learn about Abdul Aziz, a UI/UX Designer and Frontend Engineer based in Dubai, UAE, with experience across enterprise product design and modern frontend development.',
+  alternates: { canonical: '/about' },
 };
 
 export default function AboutPage() {
   return (
     <>
+      <ProfilePageJsonLd />
       <AboutHero />
       <MyJourney />
       <BeyondTheDesign />

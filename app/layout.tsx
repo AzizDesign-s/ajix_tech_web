@@ -1,10 +1,12 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Amiri, Public_Sans } from 'next/font/google';
 import './globals.css';
 import { siteConfig } from '@/config/site';
 import { Navbar } from '@/components/layout/Navbar/navbar';
 import { Footer } from '@/components/layout/Footer/footer';
 import { PersonJsonLd } from '@/components/shared/JsonLd';
+import { MotionProvider } from '@/components/shared/motionProvider';
+import { Analytics } from '@/components/shared/analytics';
 
 const amiri = Amiri({
   subsets: ['latin'],
@@ -61,6 +63,9 @@ export const metadata: Metadata = {
     description: siteConfig.description,
     images: ['/og-image.jpg'],
   },
+  verification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+    ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
+    : undefined,
   robots: {
     index: true,
     follow: true,
@@ -71,6 +76,14 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+};
+
+// Next.js emits the width/initial-scale meta tag by default; this adds the
+// browser-chrome colour so mobile Chrome/Safari match the dark UI instead of
+// flashing white, and declares the colour scheme for native form controls.
+export const viewport: Viewport = {
+  themeColor: '#01040e',
+  colorScheme: 'dark',
 };
 
 export default function RootLayout({
@@ -86,9 +99,20 @@ export default function RootLayout({
     >
       <body className="antialiased">
         <PersonJsonLd />
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+        {/* Keyboard users land here first and can jump straight past the
+            navbar — visually hidden until it receives focus. */}
+        <a
+          href="#main-content"
+          className="bg-card text-foreground focus-visible:ring-ring sr-only rounded-md px-4 py-2 text-sm font-medium focus-visible:not-sr-only focus-visible:fixed focus-visible:top-4 focus-visible:left-4 focus-visible:z-100 focus-visible:ring-2 focus-visible:outline-none"
+        >
+          Skip to main content
+        </a>
+        <MotionProvider>
+          <Navbar />
+          <main id="main-content">{children}</main>
+          <Footer />
+        </MotionProvider>
+        <Analytics />
       </body>
     </html>
   );

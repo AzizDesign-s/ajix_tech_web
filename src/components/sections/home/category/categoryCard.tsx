@@ -28,7 +28,6 @@ export function CategoryCard({ category, index, hoveredIndex, onHover }: Categor
       onMouseEnter={() => onHover(index)}
       onMouseLeave={() => onHover(null)}
       className="focus-visible:ring-primary block rounded-2xl focus-visible:ring-2 focus-visible:outline-none"
-      aria-label={`View ${category.name} projects`}
     >
       <motion.div
         animate={{

@@ -1,6 +1,9 @@
+'use client';
+
 import type { ReactNode } from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils/cn';
+import { trackEvent } from '@/lib/analytics';
 
 interface SocialLinkProps {
   href: string;
@@ -17,7 +20,8 @@ export function SocialLink({ href, label, children, className }: SocialLinkProps
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label={label}
+      aria-label={`${label} (opens in a new tab)`}
+      onClick={() => trackEvent('social_click', { network: label })}
       className={cn(
         'border-border bg-card/60 text-foreground/70 focus-visible:ring-primary hover:border-primary/60 hover:text-foreground flex h-9 w-9 items-center justify-center rounded-full border transition-colors duration-300 focus-visible:ring-2 focus-visible:outline-none',
         className,

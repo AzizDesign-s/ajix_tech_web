@@ -21,28 +21,18 @@ export function ToolCard({ tool }: ToolCardProps) {
       />
 
       {tool.type === 'icon' ? (
-        <div className="relative z-10 h-7 w-7">
-          {/* Default state — forced to a fixed muted color, so it's
-              always visible no matter what the brand's real color is */}
-          <Image
-            src={`https://cdn.simpleicons.org/${tool.slug}/94a3b8`}
-            alt={tool.label}
-            fill
-            unoptimized
-            className="object-contain opacity-60 transition-opacity duration-300 group-hover:opacity-0"
-          />
-          {/* True brand-color version — fades in on hover */}
-          <Image
-            src={`https://cdn.simpleicons.org/${tool.slug}`}
-            alt=""
-            aria-hidden="true"
-            fill
-            unoptimized
-            className="object-contain opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-          />
-        </div>
+        // One locally-hosted SVG per tool. The muted resting state and the
+        // brand-colour hover are done with a CSS filter (see .tool-icon in
+        // globals.css) instead of loading two images from a third-party CDN.
+        <Image
+          src={`/icons/tools/${tool.slug}.svg`}
+          alt={tool.label}
+          width={28}
+          height={28}
+          className="tool-icon relative z-10 h-7 w-7 object-contain"
+        />
       ) : (
-        <span className="text-foreground/50 group-hover:text-primary relative z-10 text-lg font-bold opacity-50 transition-all duration-300 group-hover:opacity-100">
+        <span className="text-muted group-hover:text-primary relative z-10 text-lg font-bold transition-colors duration-300">
           {tool.badgeText}
         </span>
       )}

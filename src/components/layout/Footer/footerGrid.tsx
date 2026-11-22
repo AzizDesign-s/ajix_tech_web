@@ -17,7 +17,9 @@ export function FooterGrid({ className }: FooterGridProps) {
         WebkitMaskImage: 'radial-gradient(ellipse at center, black 40%, transparent 90%)',
       }}
     >
-      <Image src={grid} alt="Ajix" fill className="object-fill" priority={false} loading="eager" />
+      {/* Decorative only: empty alt, lazy (it sits below the fold), and
+          object-cover so the grid is not stretched out of proportion. */}
+      <Image src={grid} alt="" fill sizes="100vw" className="object-cover" />
     </div>
   );
 }

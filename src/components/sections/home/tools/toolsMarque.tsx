@@ -19,9 +19,17 @@ export function ToolsMarquee({ tools, direction = 'left', duration = 32 }: Tools
         )}
         style={{ '--marquee-duration': `${duration}s` } as CSSProperties}
       >
-        {[...tools, ...tools].map((tool, index) => (
+        {/* The set is rendered twice so the track can loop seamlessly. The
+            second copy is purely visual — hidden from assistive tech so a
+            screen reader does not read every tool name twice. */}
+        {tools.map((tool, index) => (
           <ToolCard key={`${tool.slug}-${index}`} tool={tool} />
         ))}
+        <div aria-hidden="true" className="flex gap-4">
+          {tools.map((tool, index) => (
+            <ToolCard key={`dup-${tool.slug}-${index}`} tool={tool} />
+          ))}
+        </div>
       </div>
     </div>
   );

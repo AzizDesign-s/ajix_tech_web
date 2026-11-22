@@ -1,7 +1,6 @@
 import { CTASection } from '@/components/shared/ctaSection';
 import { GradientText } from '@/components/shared/gradientText';
-import { siteConfig } from '@/config/site';
-import { openAndDownloadResume } from '@/lib/utils/resume';
+import { ResumeButton } from '@/components/shared/resumeButton';
 
 export function CTA() {
   return (
@@ -18,12 +17,10 @@ export function CTA() {
         description="Available for UI/UX Design, Product Design, and Frontend Engineering roles, as well as select freelance projects for startups, SaaS companies, and businesses across Dubai, the UAE, and beyond."
         primaryLabel="Start a Conversation"
         primaryHref="/contact"
-        secondaryLabel="Download Resume"
-
-        secondaryOnClick={
-          siteConfig.resumeUrl
-            ? () => openAndDownloadResume(siteConfig.resumeUrl, 'Abdul_Aziz_Resume.pdf')
-            : undefined
+        secondaryAction={
+          <ResumeButton variant="surface" size="md">
+            Download Resume
+          </ResumeButton>
         }
       />
     </div>

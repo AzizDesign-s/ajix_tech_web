@@ -16,7 +16,11 @@ interface CTASectionProps {
   primaryHref: string;
   secondaryLabel?: string;
   secondaryHref?: string;
-  secondaryOnClick?: () => void;
+  /** Pre-rendered secondary action for cases that need a click handler.
+   *  An onClick cannot be passed down from here — this component and its
+   *  callers are Server Components, so the handler would never reach the
+   *  browser. Callers supply an interactive Client Component instead. */
+  secondaryAction?: ReactNode;
   className?: string;
 }
 
@@ -31,7 +35,7 @@ export function CTASection({
   primaryHref,
   secondaryLabel,
   secondaryHref,
-  secondaryOnClick,
+  secondaryAction,
   className,
 }: CTASectionProps) {
   return (
@@ -53,15 +57,20 @@ export function CTASection({
             <Button
               variant="gradient"
               size="md"
-              icon={<ArrowUpRight size={16} />}
+              icon={<ArrowUpRight size={16} aria-hidden="true" />}
               href={primaryHref}
             >
               {primaryLabel}
             </Button>
           </Magnetic>
-          {secondaryLabel && secondaryHref && (
+          {/* This previously required BOTH secondaryLabel and secondaryHref.
+              The homepage passes a label with an action and no href, so the
+              condition was never satisfied and the secondary CTA — the resume
+              download — silently did not render at all. */}
+          {secondaryAction && <Magnetic>{secondaryAction}</Magnetic>}
+          {!secondaryAction && secondaryLabel && secondaryHref && (
             <Magnetic>
-              <Button variant="surface" size="md" onClick={secondaryOnClick}>
+              <Button variant="surface" size="md" href={secondaryHref}>
                 {secondaryLabel}
               </Button>
             </Magnetic>

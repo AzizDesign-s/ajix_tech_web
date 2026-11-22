@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Color, Scene, Fog, PerspectiveCamera, Vector3 } from 'three';
 import ThreeGlobe from 'three-globe';
-import { useThree, Canvas, extend } from '@react-three/fiber';
+import { Canvas, extend } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
+import { useReducedMotion } from 'framer-motion';
 import countries from '@/data/globe.json';
 import * as THREE from 'three';
 
@@ -61,29 +62,35 @@ export type GlobeConfig = {
 interface WorldProps {
   globeConfig: GlobeConfig;
   data: Position[];
+  /** False while the card is off-screen or the tab is hidden — the render loop
+   *  and the ring interval both stop, so an unseen globe costs nothing. */
+  active?: boolean;
 }
 
-export function Globe({ globeConfig, data }: WorldProps) {
+export function Globe({ globeConfig, data, active = true }: WorldProps) {
   const globeRef = useRef<ThreeGlobe | null>(null);
   const groupRef = useRef<THREE.Group | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);
 
-  const defaultProps = {
-    pointSize: 1,
-    atmosphereColor: '#ffffff',
-    showAtmosphere: true,
-    atmosphereAltitude: 0.1,
-    polygonColor: 'rgba(255,255,255,0.7)',
-    globeColor: '#1d072e',
-    emissive: '#000000',
-    emissiveIntensity: 0.1,
-    shininess: 0.9,
-    arcTime: 2000,
-    arcLength: 0.9,
-    rings: 1,
-    maxRings: 3,
-    ...globeConfig,
-  };
+  const defaultProps = useMemo(
+    () => ({
+      pointSize: 1,
+      atmosphereColor: '#ffffff',
+      showAtmosphere: true,
+      atmosphereAltitude: 0.1,
+      polygonColor: 'rgba(255,255,255,0.7)',
+      globeColor: '#1d072e',
+      emissive: '#000000',
+      emissiveIntensity: 0.1,
+      shininess: 0.9,
+      arcTime: 2000,
+      arcLength: 0.9,
+      rings: 1,
+      maxRings: 3,
+      ...globeConfig,
+    }),
+    [globeConfig],
+  );
 
   useEffect(() => {
     if (!globeRef.current && groupRef.current) {
@@ -91,6 +98,28 @@ export function Globe({ globeConfig, data }: WorldProps) {
       (groupRef.current as THREE.Group).add(globeRef.current as unknown as THREE.Object3D);
       setIsInitialized(true);
     }
+
+    const group = groupRef.current;
+    // Nothing used to release these. Every visit to /about built a fresh globe —
+    // geometries, materials and textures for every country hexagon — and left
+    // the previous one attached to a dead scene.
+    return () => {
+      const globe = globeRef.current;
+      if (globe) {
+        (globe as unknown as THREE.Object3D).traverse((object) => {
+          const mesh = object as THREE.Mesh;
+          if (mesh.geometry) mesh.geometry.dispose();
+          const material = mesh.material;
+          if (Array.isArray(material)) {
+            material.forEach((m) => m.dispose());
+          } else if (material) {
+            material.dispose();
+          }
+        });
+        group?.remove(globe as unknown as THREE.Object3D);
+      }
+      globeRef.current = null;
+    };
   }, []);
 
   useEffect(() => {
@@ -179,22 +208,12 @@ export function Globe({ globeConfig, data }: WorldProps) {
       .ringMaxRadius(defaultProps.maxRings)
       .ringPropagationSpeed(RING_PROPAGATION_SPEED)
       .ringRepeatPeriod((defaultProps.arcTime * defaultProps.arcLength) / defaultProps.rings);
-  }, [
-    isInitialized,
-    data,
-    defaultProps.pointSize,
-    defaultProps.showAtmosphere,
-    defaultProps.atmosphereColor,
-    defaultProps.atmosphereAltitude,
-    defaultProps.polygonColor,
-    defaultProps.arcLength,
-    defaultProps.arcTime,
-    defaultProps.rings,
-    defaultProps.maxRings,
-  ]);
+  }, [isInitialized, data, defaultProps]);
 
   useEffect(() => {
-    if (!globeRef.current || !isInitialized || !data) return;
+    // Previously this ran forever, including while the card was off-screen and
+    // while the tab was in the background.
+    if (!globeRef.current || !isInitialized || !data || !active) return;
 
     const interval = setInterval(() => {
       if (!globeRef.current) return;
@@ -215,30 +234,37 @@ export function Globe({ globeConfig, data }: WorldProps) {
     return () => {
       clearInterval(interval);
     };
-  }, [isInitialized, data]);
+  }, [isInitialized, data, active]);
 
   return <group ref={groupRef} />;
 }
 
-export function WebGLRendererConfig() {
-  const { gl, size } = useThree();
-
-  useEffect(() => {
-    gl.setPixelRatio(window.devicePixelRatio);
-    gl.setSize(size.width, size.height);
-    gl.setClearColor(0xffaaff, 0);
-  }, [gl, size.width, size.height]);
-
-  return null;
-}
-
 export function World(props: WorldProps) {
-  const { globeConfig } = props;
-  const scene = new Scene();
-  scene.fog = new Fog(0xffffff, 400, 2000);
+  const { globeConfig, active = true } = props;
+  const prefersReducedMotion = useReducedMotion();
+
+  // Built once. These used to be constructed on every render of World, handing
+  // react-three-fiber a brand-new scene and camera each time.
+  const scene = useMemo(() => {
+    const s = new Scene();
+    s.fog = new Fog(0xffffff, 400, 2000);
+    return s;
+  }, []);
+
+  const camera = useMemo(() => new PerspectiveCamera(50, aspect, 180, 1800), []);
+
   return (
-    <Canvas scene={scene} camera={new PerspectiveCamera(50, aspect, 180, 1800)}>
-      <WebGLRendererConfig />
+    <Canvas
+      scene={scene}
+      camera={camera}
+      // Cap the device pixel ratio: rendering a WebGL globe at a phone's full
+      // 3x DPR costs ~9x the fragments for no perceptible gain at this size.
+      dpr={[1, 1.75]}
+      // 'never' halts the render loop entirely while the card is off-screen.
+      frameloop={active ? 'always' : 'never'}
+      // Purely decorative — there is no information here a screen reader needs.
+      aria-hidden="true"
+    >
       <ambientLight color={globeConfig.ambientLight} intensity={0.6} />
       <directionalLight
         color={globeConfig.directionalLeftLight}
@@ -259,25 +285,15 @@ export function World(props: WorldProps) {
         enableZoom={false}
         minDistance={cameraZ}
         maxDistance={cameraZ}
-        autoRotateSpeed={1}
-        autoRotate={true}
+        // These now read from globeConfig instead of being hardcoded, and stop
+        // entirely for visitors who asked for reduced motion.
+        autoRotate={Boolean(globeConfig.autoRotate) && !prefersReducedMotion && active}
+        autoRotateSpeed={globeConfig.autoRotateSpeed ?? 0.5}
         minPolarAngle={Math.PI / 3.5}
         maxPolarAngle={Math.PI - Math.PI / 3}
       />
     </Canvas>
   );
-}
-
-export function hexToRgb(hex: string) {
-  const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-  hex = hex.replace(shorthandRegex, function (m, r, g, b) {
-    return r + r + g + g + b + b;
-  });
-
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result
-    ? { r: parseInt(result[1], 16), g: parseInt(result[2], 16), b: parseInt(result[3], 16) }
-    : null;
 }
 
 export function genRandomNumbers(min: number, max: number, count: number) {

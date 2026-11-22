@@ -13,6 +13,13 @@
   --color-card: #050d24;
   --color-muted: #94a3b8;
 
+  /* Focus ring + secondary text. These were already referenced by
+     focus-visible:ring-ring, ring-offset-background and text-muted-foreground
+     but were never defined, so those utilities produced nothing and keyboard
+     focus was invisible. */
+  --color-ring: #22d3ee;
+  --color-muted-foreground: #94a3b8;
+
   --color-success: #22c55e;
   --color-warning: #f59e0b;
   --color-danger: #ef4444;
@@ -177,11 +184,9 @@
 }
 
 /* Pause on hover — small UX touch, not explicitly requested but standard
-   for marquees so users can actually read a logo they're pointing at */
-.marquee-row:hover .marquee-track,
-.marquee-row:hover .marquee-track-reverse {
-  animation-play-state: paused;
-}
+   for marquees so users can actually read a logo they're pointing at.
+   Covers both axes; the horizontal-only copy that used to sit here was an
+   exact subset of the rule above. */
 
 @property --angle {
   syntax: '<angle>';
@@ -236,4 +241,69 @@ body {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Locally-hosted brand icons. brightness(0) flattens any brand colour to black,
+   invert() lifts it to one uniform muted grey — so every icon rests at the same
+   tone regardless of its brand colour, then reveals its true colour on hover.
+   Replaces two CDN requests per icon with one local file. */
+.tool-icon {
+  filter: brightness(0) invert(0.65);
+  transition:
+    filter 300ms ease,
+    opacity 300ms ease;
+}
+
+.group:hover .tool-icon {
+  filter: none;
+}
+
+/* Non-interactive contexts (the ecosystem list) stay muted permanently. */
+.tool-icon-static {
+  filter: brightness(0) invert(0.65);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tool-icon {
+    transition: none;
+  }
+}
+
+/* Entrance reveal for above-the-fold hero content.
+   This used to be a Framer Motion stagger with initial={{opacity:0}}, which
+   meant the server sent the hero hidden and nothing painted until React had
+   hydrated — LCP could not fire until then. As CSS it starts at first paint
+   instead, with the same fade-and-rise and the same stagger.
+   animation-fill-mode: backwards applies the start frame during the delay only;
+   if animations are unavailable the element simply renders visible. */
+@keyframes hero-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hero-reveal {
+  animation: hero-reveal 600ms cubic-bezier(0, 0, 0.2, 1) backwards;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+
+@keyframes hero-reveal-scale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hero-reveal-scale {
+  animation: hero-reveal-scale 800ms cubic-bezier(0, 0, 0.2, 1) backwards;
+  animation-delay: var(--reveal-delay, 0ms);
 }

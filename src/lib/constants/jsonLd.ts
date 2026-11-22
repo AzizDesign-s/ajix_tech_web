@@ -2,10 +2,15 @@ import { siteConfig, socials } from '@/config/site';
 
 // Person structured data — helps Google understand who you are and
 // can power rich results (knowledge panel eligibility, etc).
+//
+// Everything here must be verifiable from the site itself. No ratings, no
+// review counts, no awards that aren't real — fabricated structured data is a
+// manual-action risk and gains nothing.
 export function getPersonJsonLd() {
   return {
     '@context': 'https://schema.org',
     '@type': 'Person',
+    '@id': `${siteConfig.url}/#person`,
     name: siteConfig.fullName,
     alternateName: siteConfig.name,
     url: siteConfig.url,
@@ -20,7 +25,7 @@ export function getPersonJsonLd() {
     sameAs: Object.values(socials).filter(Boolean),
     knowsAbout: [
       'UI/UX Design',
-      'Fronend Developer',
+      'Frontend Development',
       'Product Design',
       'Frontend Engineering',
       'React',
@@ -28,5 +33,34 @@ export function getPersonJsonLd() {
       'Design Systems',
       'Enterprise SaaS Design',
     ],
+  };
+}
+
+// WebSite ties the whole domain together and lets Google associate the site
+// with the Person above.
+export function getWebSiteJsonLd() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${siteConfig.url}/#website`,
+    url: siteConfig.url,
+    name: siteConfig.name,
+    description: siteConfig.description,
+    inLanguage: 'en',
+    publisher: { '@id': `${siteConfig.url}/#person` },
+  };
+}
+
+// ProfilePage marks /about as the canonical page *about* the Person, which is
+// exactly what this schema type is for.
+export function getProfilePageJsonLd() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ProfilePage',
+    '@id': `${siteConfig.url}/about#profilepage`,
+    url: `${siteConfig.url}/about`,
+    name: `About ${siteConfig.fullName}`,
+    isPartOf: { '@id': `${siteConfig.url}/#website` },
+    mainEntity: { '@id': `${siteConfig.url}/#person` },
   };
 }

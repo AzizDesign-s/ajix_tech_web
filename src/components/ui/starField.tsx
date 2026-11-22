@@ -1,6 +1,4 @@
-'use client';
-
-import { useMemo } from 'react';
+import type { CSSProperties } from 'react';
 
 interface Star {
   id: number;
@@ -11,17 +9,17 @@ interface Star {
   duration: number;
 }
 
-// Generated client-side only, after mount — Math.random() would otherwise
-// produce different values on the server vs. the browser and trigger a
-// hydration mismatch (same class of bug as the browser-extension warning
-// we hit earlier — avoiding it outright here rather than patching it after).
 function round(value: number, decimals = 3) {
   return Number(value.toFixed(decimals));
 }
 
+// Deterministic by design: a seeded pseudo-random source produces identical
+// values on the server and in the browser, so there is no hydration mismatch
+// and this can stay a Server Component (zero client JS).
 function seededRandom(seed: number) {
   return Math.abs(Math.sin(seed * 999) * 10000) % 1;
 }
+
 function generateStars(count: number): Star[] {
   return Array.from({ length: count }, (_, i) => ({
     id: i,
@@ -38,11 +36,7 @@ interface StarfieldProps {
 }
 
 export function Starfield({ count = 40 }: StarfieldProps) {
-  const stars = useMemo(() => generateStars(count), [count]);
-
-  // useEffect(() => {
-  //   setStars(generateStars(count));
-  // }, [count]);
+  const stars = generateStars(count);
 
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -50,15 +44,20 @@ export function Starfield({ count = 40 }: StarfieldProps) {
         <span
           key={star.id}
           className="bg-primary animate-twinkle absolute rounded-full"
-          style={{
-            left: star.left,
-            top: star.top,
-            width: `${star.size}`,
-            height: `${star.size}`,
-            animationDelay: `${star.delay}s`,
-            animationDuration: `${star.duration}s`,
-            boxShadow: '0 0 4px 1px rgba(34, 211, 238, 0.8)',
-          }}
+          style={
+            {
+              left: star.left,
+              top: star.top,
+              // These were `${star.size}` with no unit — an invalid CSS length,
+              // so the browser dropped it and every star rendered at 0x0. Only
+              // the box-shadow was visible, as a faint blur instead of a star.
+              width: `${star.size}px`,
+              height: `${star.size}px`,
+              animationDelay: `${star.delay}s`,
+              animationDuration: `${star.duration}s`,
+              boxShadow: '0 0 4px 1px rgba(34, 211, 238, 0.8)',
+            } as CSSProperties
+          }
         />
       ))}
     </div>

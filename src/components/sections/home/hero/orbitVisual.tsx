@@ -1,7 +1,4 @@
-'use client';
-
 import Image from 'next/image';
-import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils/cn';
 
 const logo = '/logo/ajix-icon-light.svg';
@@ -43,11 +40,14 @@ export function OrbitVisual({ className }: OrbitVisualProps) {
         />
       ))}
 
-      {/* Continuous smooth rotation — no longer tied to scroll position */}
-      <motion.div
-        className="absolute inset-0"
-        animate={{ rotate: 360 }}
-        transition={{ duration: ORBIT_DURATION, repeat: Infinity, ease: 'linear' }}
+      {/* Continuous smooth rotation. This was a Framer Motion infinite
+          animation, which keeps a JS animation loop alive for the life of the
+          page; globals.css already defines the same rotation as a CSS keyframe
+          (--animate-orbit), which the compositor can run on its own and which
+          the prefers-reduced-motion block already covers. */}
+      <div
+        className="animate-orbit absolute inset-0"
+        style={{ animationDuration: `${ORBIT_DURATION}s` }}
       >
         {GLOW_DOTS.map((dot, i) => {
           const xPercent = 50 + dot.radius * 50 * Math.cos((dot.angle * Math.PI) / 180);
@@ -66,7 +66,7 @@ export function OrbitVisual({ className }: OrbitVisualProps) {
             />
           );
         })}
-      </motion.div>
+      </div>
 
       <div className="bg-gradient-primary shadow-glow-blue relative z-10 flex h-28 w-28 items-center justify-center rounded-full sm:h-32 sm:w-32 lg:h-36 lg:w-36">
         <div className="bg-foreground flex h-14 w-14 items-center justify-center rounded-full sm:h-12 sm:w-12 lg:h-16 lg:w-16">
@@ -75,7 +75,7 @@ export function OrbitVisual({ className }: OrbitVisualProps) {
             alt="AJIX"
             width={28}
             height={28}
-
+            loading="eager"
             className="h-auto w-6 sm:w-8 lg:w-10"
           />
         </div>
