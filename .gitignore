@@ -36,3 +36,12 @@ next-env.d.ts
 # IDE
 .vscode/
 .idea/
+# Sanity Studio (standalone package)
+studio/node_modules
+studio/dist
+studio/.sanity
+
+# Rendered email previews (npm run email:preview). The spec is committed; its
+# output is not.
+email-preview/*.html
+email-preview/*.png

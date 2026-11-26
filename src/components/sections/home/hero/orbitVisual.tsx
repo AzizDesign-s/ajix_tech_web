@@ -25,9 +25,17 @@ const ORBIT_DURATION = 30; // seconds — smooth continuous loop, matches HireOr
 
 interface OrbitVisualProps {
   className?: string;
+  /**
+   * Ring border classes. The default is tuned for the dark theme, where
+   * --color-border is a deep navy against near-black and reads clearly at 80%
+   * opacity. On the light theme that same token is a pale grey on near-white
+   * and all but disappears, so the light pages pass a stronger value rather
+   * than everyone living with the weaker one.
+   */
+  ringClassName?: string;
 }
 
-export function OrbitVisual({ className }: OrbitVisualProps) {
+export function OrbitVisual({ className, ringClassName = 'border-border/80' }: OrbitVisualProps) {
   return (
     <div className={cn('animate-float-slow relative flex items-center justify-center', className)}>
       <div className="bg-gradient-primary absolute inset-0 rounded-full opacity-20 blur-3xl" />
@@ -35,7 +43,7 @@ export function OrbitVisual({ className }: OrbitVisualProps) {
       {RING_SIZES.map((size) => (
         <div
           key={size}
-          className="border-border/80 absolute rounded-full border"
+          className={cn('absolute rounded-full border', ringClassName)}
           style={{ width: size, height: size }}
         />
       ))}

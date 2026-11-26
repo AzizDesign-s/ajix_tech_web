@@ -5,3 +5,8 @@ build
 public
 *.lock
 package-lock.json
+test-results
+playwright-report
+studio/node_modules
+studio/dist
+studio/schema.json

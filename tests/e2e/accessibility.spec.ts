@@ -1,7 +1,13 @@
 import { test, expect, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-const ROUTES = ['/', '/about', '/contact'] as const;
+const ROUTES = [
+  '/',
+  '/about',
+  '/contact',
+  '/projects',
+  '/projects/qr-ordering-digital-system',
+] as const;
 
 /**
  * Scroll-triggered reveals only start when their section enters the viewport,

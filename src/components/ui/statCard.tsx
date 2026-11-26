@@ -3,7 +3,10 @@
 import { motion } from 'framer-motion';
 
 interface StatCardProps {
-  value: string;
+  /** ReactNode rather than string so a live value (the Dubai clock) can be
+   *  passed in with the same styling. Every existing string caller still
+   *  type-checks unchanged. */
+  value: React.ReactNode;
   label: string;
   className?: string;
   delay?: number;

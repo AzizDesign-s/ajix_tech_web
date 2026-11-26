@@ -1,21 +1,71 @@
+import { Suspense } from 'react';
 import type { Metadata } from 'next';
+import { WorkHero } from '@/components/sections/work/workHero';
+import { FeaturedSpotlight } from '@/components/sections/work/featuredSpotlight';
+import { ProjectExplorer } from '@/components/sections/work/projectExplorer';
+import { CapabilitiesSection } from '@/components/sections/work/capabilitiesSection';
+import { CTASection } from '@/components/shared/ctaSection';
+import { WorkPageJsonLd } from '@/components/shared/JsonLd';
+import { WorkPageView } from '@/components/sections/work/workPageView';
+import { getSiteSettings } from '@/lib/services/siteSettings';
+import { getWorkCounts, getWorkItems, pickSpotlight } from '@/lib/services/work';
 
 export const metadata: Metadata = {
-  title: 'Projects',
+  title: 'Work',
   description:
-    'A collection of enterprise products, SaaS platforms, and interactive digital experiences by Abdul Aziz — spanning UI/UX design, frontend engineering, and brand identity.',
-  // Placeholder page — kept out of the index until it has real content, so
-  // Google never sees an empty page under this URL.
-  robots: { index: false, follow: true },
+    'Selected product design, UX and frontend engineering work by Abdul Aziz — enterprise systems, SaaS platforms and interactive websites built for teams in Dubai and the wider UAE.',
+  alternates: { canonical: '/projects' },
+  openGraph: {
+    title: 'Work — AJIX',
+    description:
+      'Enterprise product design, UX strategy and frontend engineering. Case studies, websites and SaaS products.',
+    url: '/projects',
+    type: 'website',
+  },
 };
 
-export default function ProjectsPage() {
-  // No <main> here: app/layout.tsx already provides the single main landmark.
+export default async function ProjectsPage() {
+  const [items, settings] = await Promise.all([getWorkItems(), getSiteSettings()]);
+
+  const counts = getWorkCounts(items);
+  const spotlight = pickSpotlight(items, settings.spotlightProjectSlug);
+
+  // No <main> here: the route-group layout already provides the single main
+  // landmark for the page.
   return (
-    <section className="mx-auto flex min-h-[60vh] max-w-7xl flex-col items-center justify-center px-6 pt-40 pb-25 text-center md:px-10">
-      <h1 className="font-heading text-foreground text-3xl font-bold md:text-4xl">
-        Projects — coming soon
-      </h1>
-    </section>
+    <>
+      <WorkPageJsonLd items={items} />
+      <WorkPageView projectCount={items.length} />
+
+      <WorkHero counts={counts} />
+
+      {/* Rendered only when there is something to spotlight. An empty
+          spotlight frame would be worse than no section. */}
+      {spotlight && <FeaturedSpotlight item={spotlight} />}
+
+      {/* useSearchParams() needs a Suspense boundary for the rest of the page
+          to stay statically prerendered. Without it Next opts the whole route
+          into dynamic rendering, and the hero stops being static HTML. */}
+      <Suspense fallback={<ExplorerFallback />}>
+        <ProjectExplorer items={items} />
+      </Suspense>
+
+      <CapabilitiesSection />
+
+      <CTASection
+        eyebrow="Let's build"
+        title="Have a project in mind?"
+        description="Let's turn complex ideas into intuitive, meaningful digital experiences."
+        primaryLabel="Start a Project"
+        primaryHref="/contact"
+        secondaryLabel="Hire Me"
+        secondaryHref="/contact?intent=hire"
+      />
+    </>
   );
+}
+
+/** Reserves the explorer's vertical space so nothing jumps when it hydrates. */
+function ExplorerFallback() {
+  return <div aria-hidden="true" className="min-h-[60vh] w-full" />;
 }

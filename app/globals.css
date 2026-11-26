@@ -291,13 +291,23 @@ body:has([data-theme='light']) {
 
 html {
   overflow-x: hidden;
+  /* Chapter links on a case study jump with easing rather than teleporting.
+     The prefers-reduced-motion block below already forces this back to `auto`
+     with !important, so doing it in CSS keeps that override working — a
+     JavaScript scrollTo({behavior:'smooth'}) would bypass it entirely. */
+  scroll-behavior: smooth;
 }
 
 body {
   background-color: var(--color-background);
   color: var(--color-foreground);
   font-family: var(--font-body);
-  overflow-x: hidden;
+  /* `clip`, not `hidden`. Both stop horizontal scrolling, but `hidden` makes
+     the body a scroll container, and a `position: sticky` descendant then
+     sticks to that container rather than to the viewport — which silently
+     broke the case-study chapter navigation. `clip` creates no scroll
+     container, so sticky keeps working. */
+  overflow-x: clip;
 }
 
 @media (prefers-reduced-motion: reduce) {

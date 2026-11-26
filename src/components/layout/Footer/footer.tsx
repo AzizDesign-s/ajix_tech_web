@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { ConsentSettingsButton } from '@/components/shared/consentBanner';
 
 import { FaGithub, FaLinkedin, FaInstagram, FaBehance } from 'react-icons/fa6';
 import { Logo } from '@/components/shared/logo';
@@ -68,9 +69,12 @@ export function Footer({ theme = 'dark' }: { theme?: SiteTheme }) {
 
         {/* Bottom row — copyright + back to top */}
         <div className="flex flex-col items-center gap-4 pt-4 text-center md:flex-row md:justify-between md:text-left">
-          <p className="text-muted text-sm">
-            © {year} {siteConfig.name}. All rights reserved.
-          </p>
+          <div className="flex flex-col items-center gap-2 md:flex-row md:gap-4">
+            <p className="text-muted text-sm">
+              © {year} {siteConfig.name}. All rights reserved.
+            </p>
+            <ConsentSettingsButton />
+          </div>
           <BackToTop />
         </div>
       </div>

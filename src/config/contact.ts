@@ -28,6 +28,15 @@ export const contactChannels = {
   whatsappMessage:
     "Hello Abdul Aziz, I found your portfolio and I'd like to talk about an opportunity.",
 
+  /**
+   * E.164 format, WITH the leading "+", e.g. +9715XXXXXXXX. Used for the
+   * tel: link and for the JSON-LD contact point.
+   *
+   * Hidden entirely while unset. A phone number is the one contact detail
+   * where a wrong value is worse than no value — it reaches a stranger.
+   */
+  phone: process.env.NEXT_PUBLIC_CONTACT_PHONE ?? '',
+
   linkedin: socials.linkedin,
 
   /**
@@ -45,6 +54,19 @@ export const contactChannels = {
 export function isConfigured(value: string, placeholder?: string): boolean {
   return Boolean(value) && value !== placeholder;
 }
+
+/** Formats +9715XXXXXXXX as +971 5X XXX XXXX for display. Other country
+ *  codes fall back to the raw value rather than being mangled. */
+export function formatPhone(e164: string): string {
+  if (!e164) return '';
+  const digits = e164.replace(/[^\d]/g, '');
+  if (digits.startsWith('971') && digits.length === 12) {
+    return `+971 ${digits.slice(3, 5)} ${digits.slice(5, 8)} ${digits.slice(8)}`;
+  }
+  return e164;
+}
+
+export const phoneHref = contactChannels.phone ? `tel:${contactChannels.phone}` : '';
 
 export const whatsappHref = contactChannels.whatsappNumber
   ? `https://wa.me/${contactChannels.whatsappNumber}?text=${encodeURIComponent(contactChannels.whatsappMessage)}`
@@ -148,3 +170,39 @@ export const COLLABORATION_TYPES = [
   'Content or community',
   'Something else',
 ] as const;
+
+/**
+ * The two kinds of call worth offering.
+ *
+ * Deliberately only two. A long menu of meeting types makes a visitor stop and
+ * choose carefully, which is friction exactly where you least want it; two
+ * obvious options are picked in about a second.
+ *
+ * Each carries a `subject` so that when no scheduling link is configured, the
+ * card still works — it opens an email already labelled with the call type
+ * instead of rendering a dead button.
+ */
+export interface MeetingType {
+  id: string;
+  title: string;
+  minutes: number;
+  description: string;
+  subject: string;
+}
+
+export const meetingTypes: MeetingType[] = [
+  {
+    id: 'intro',
+    title: 'Quick Introduction',
+    minutes: 15,
+    description: 'A short call to see whether there is a fit, with no agenda beyond that.',
+    subject: 'Quick introduction call — 15 minutes',
+  },
+  {
+    id: 'project',
+    title: 'Project Discussion',
+    minutes: 30,
+    description: 'Walk through scope, constraints and timeline for a specific piece of work.',
+    subject: 'Project discussion — 30 minutes',
+  },
+];

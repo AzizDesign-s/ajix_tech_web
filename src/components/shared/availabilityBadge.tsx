@@ -1,4 +1,7 @@
-import { getCurrentAvailability, availabilityDotColor } from '@/config/availability';
+'use client';
+
+import { availabilityDotColor } from '@/config/availability';
+import { useAvailability } from '@/components/shared/availabilityProvider';
 import { cn } from '../../lib/utils/cn';
 
 interface AvailabilityBadgeProps {
@@ -6,7 +9,9 @@ interface AvailabilityBadgeProps {
 }
 
 export function AvailabilityBadge({ className }: AvailabilityBadgeProps) {
-  const availability = getCurrentAvailability();
+  // Supplied by <AvailabilityProvider> in the route-group layout, which reads
+  // it from Sanity. Falls back to the local config when no provider is above.
+  const availability = useAvailability();
   const dotColor = availabilityDotColor[availability.level];
 
   return (

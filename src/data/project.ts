@@ -1,3 +1,4 @@
+import { demoCaseStudySections } from '@/data/caseStudyDemo';
 import { Project, PROJECT_CATEGORIES } from '@/types/project';
 
 const qr = '/images/project/qr.png';
@@ -21,6 +22,10 @@ export const projects: Project[] = [
     toolSlugs: ['figma', 'nextdotjs', 'javascript', 'tailwindcss'],
     image: qr,
     featured: true,
+    // Demo scaffolding so the case-study renderer can be seen before any
+    // real content exists. Delete this line and src/data/caseStudyDemo.ts
+    // once the write-up lives in Sanity.
+    caseStudySections: demoCaseStudySections,
   },
   {
     id: 'smart-hr',
@@ -41,9 +46,10 @@ export const projects: Project[] = [
       'Placeholder project — a healthcare admin platform concept for managing patient records, appointments, and billing workflows.',
     category: PROJECT_CATEGORIES.ENTERPRISE_PRODUCT_DESIGN,
     toolSlugs: ['figma', 'react', 'tailwindcss'],
-    image: '/images/projects/placeholder.jpg',
+    image: '/images/project/placeholder/generic-uiux.svg',
     featured: false,
     isDummy: true,
+    isPlaceholderCover: true,
   },
   {
     id: 'dummy-epd-2',
@@ -53,9 +59,10 @@ export const projects: Project[] = [
       'Placeholder project — a fleet tracking and logistics management dashboard concept for enterprise shipping operations.',
     category: PROJECT_CATEGORIES.ENTERPRISE_PRODUCT_DESIGN,
     toolSlugs: ['figma', 'react', 'typescript'],
-    image: '/images/projects/placeholder.jpg',
+    image: '/images/project/placeholder/generic-uiux.svg',
     featured: false,
     isDummy: true,
+    isPlaceholderCover: true,
   },
   {
     id: 'dummy-epd-3',
@@ -65,9 +72,10 @@ export const projects: Project[] = [
       'Placeholder project — a point-of-sale and inventory management concept for multi-branch retail businesses.',
     category: PROJECT_CATEGORIES.ENTERPRISE_PRODUCT_DESIGN,
     toolSlugs: ['figma', 'tailwindcss'],
-    image: '/images/projects/placeholder.jpg',
+    image: '/images/project/placeholder/generic-uiux.svg',
     featured: false,
     isDummy: true,
+    isPlaceholderCover: true,
   },
   {
     id: 'dummy-epd-4',
@@ -77,9 +85,10 @@ export const projects: Project[] = [
       'Placeholder project — a claims submission and tracking portal concept designed for insurance enterprise clients.',
     category: PROJECT_CATEGORIES.ENTERPRISE_PRODUCT_DESIGN,
     toolSlugs: ['figma', 'react', 'tailwindcss'],
-    image: '/images/projects/placeholder.jpg',
+    image: '/images/project/placeholder/generic-uiux.svg',
     featured: false,
     isDummy: true,
+    isPlaceholderCover: true,
   },
 
   // ─────────────────────────────────────────────
@@ -117,9 +126,10 @@ export const projects: Project[] = [
       'Placeholder project — a physics-based automotive dashboard simulator built with custom React hooks for speed, fuel, and sound.',
     category: PROJECT_CATEGORIES.FRONTEND_ENGINEERING,
     toolSlugs: ['react', 'tailwindcss', 'framer'],
-    image: '/images/projects/placeholder.jpg',
+    image: '/images/project/placeholder/generic-website.svg',
     featured: false,
     isDummy: true,
+    isPlaceholderCover: true,
     liveUrl: '',
   },
   {
@@ -130,9 +140,10 @@ export const projects: Project[] = [
       'Placeholder project — an embeddable, data-driven analytics widget concept built with a component-driven architecture.',
     category: PROJECT_CATEGORIES.FRONTEND_ENGINEERING,
     toolSlugs: ['react', 'typescript'],
-    image: '/images/projects/placeholder.jpg',
+    image: '/images/project/placeholder/generic-website.svg',
     featured: false,
     isDummy: true,
+    isPlaceholderCover: true,
     liveUrl: '',
   },
   {
@@ -143,9 +154,10 @@ export const projects: Project[] = [
       'Placeholder project — a fast, filterable recipe discovery app concept with a clean component library.',
     category: PROJECT_CATEGORIES.FRONTEND_ENGINEERING,
     toolSlugs: ['react', 'tailwindcss'],
-    image: '/images/projects/placeholder.jpg',
+    image: '/images/project/placeholder/generic-website.svg',
     featured: false,
     isDummy: true,
+    isPlaceholderCover: true,
     liveUrl: '',
   },
   {
@@ -156,9 +168,10 @@ export const projects: Project[] = [
       'Placeholder project — a ticketing and event booking platform concept with seat selection and payment flows.',
     category: PROJECT_CATEGORIES.FRONTEND_ENGINEERING,
     toolSlugs: ['react', 'typescript', 'tailwindcss'],
-    image: '/images/projects/placeholder.jpg',
+    image: '/images/project/placeholder/generic-website.svg',
     featured: false,
     isDummy: true,
+    isPlaceholderCover: true,
     liveUrl: '',
   },
   {
@@ -169,9 +182,10 @@ export const projects: Project[] = [
       'Placeholder project — a data visualization dashboard concept for tracking workouts and progress over time.',
     category: PROJECT_CATEGORIES.FRONTEND_ENGINEERING,
     toolSlugs: ['react', 'tailwindcss', 'framer'],
-    image: '/images/projects/placeholder.jpg',
+    image: '/images/project/placeholder/generic-website.svg',
     featured: false,
     isDummy: true,
+    isPlaceholderCover: true,
     liveUrl: '',
   },
 
@@ -210,9 +224,10 @@ export const projects: Project[] = [
       'Placeholder project — an immersive event microsite concept with scroll-triggered animation and a bold visual identity.',
     category: PROJECT_CATEGORIES.INTERACTIVE_EXPERIENCE,
     toolSlugs: ['framer', 'javascript'],
-    image: '/images/projects/placeholder.jpg',
+    image: '/images/project/placeholder/generic-website.svg',
     featured: false,
     isDummy: true,
+    isPlaceholderCover: true,
     liveUrl: '',
   },
   {
@@ -223,9 +238,10 @@ export const projects: Project[] = [
       'Placeholder project — a creative studio portfolio concept with cursor-driven interactions and cinematic transitions.',
     category: PROJECT_CATEGORIES.INTERACTIVE_EXPERIENCE,
     toolSlugs: ['framer', 'css3'],
-    image: '/images/projects/placeholder.jpg',
+    image: '/images/project/placeholder/generic-website.svg',
     featured: false,
     isDummy: true,
+    isPlaceholderCover: true,
     liveUrl: '',
   },
   {
@@ -236,9 +252,10 @@ export const projects: Project[] = [
       'Placeholder project — an interactive travel storytelling concept using parallax scroll and dynamic imagery.',
     category: PROJECT_CATEGORIES.INTERACTIVE_EXPERIENCE,
     toolSlugs: ['react', 'framer'],
-    image: '/images/projects/placeholder.jpg',
+    image: '/images/project/placeholder/generic-website.svg',
     featured: false,
     isDummy: true,
+    isPlaceholderCover: true,
     liveUrl: '',
   },
   {
@@ -249,9 +266,10 @@ export const projects: Project[] = [
       'Placeholder project — a product launch landing page concept with 3D-style visuals and micro-interactions.',
     category: PROJECT_CATEGORIES.INTERACTIVE_EXPERIENCE,
     toolSlugs: ['framer', 'javascript', 'css3'],
-    image: '/images/projects/placeholder.jpg',
+    image: '/images/project/placeholder/generic-website.svg',
     featured: false,
     isDummy: true,
+    isPlaceholderCover: true,
     liveUrl: '',
   },
 
@@ -266,9 +284,10 @@ export const projects: Project[] = [
       'Placeholder project — a calming, nature-inspired brand identity concept for a wellness and mindfulness studio.',
     category: PROJECT_CATEGORIES.BRAND_IDENTITY,
     toolSlugs: ['figma', 'illustrator'],
-    image: '/images/projects/placeholder.jpg',
+    image: '/images/project/placeholder/generic-website.svg',
     featured: false,
     isDummy: true,
+    isPlaceholderCover: true,
   },
   {
     id: 'dummy-brand-2',
@@ -278,9 +297,10 @@ export const projects: Project[] = [
       'Placeholder project — a bold, artisanal brand identity concept for a specialty coffee roastery.',
     category: PROJECT_CATEGORIES.BRAND_IDENTITY,
     toolSlugs: ['figma', 'illustrator', 'photoshop'],
-    image: '/images/projects/placeholder.jpg',
+    image: '/images/project/placeholder/generic-website.svg',
     featured: false,
     isDummy: true,
+    isPlaceholderCover: true,
   },
   {
     id: 'dummy-brand-3',
@@ -290,9 +310,10 @@ export const projects: Project[] = [
       'Placeholder project — a high-energy brand identity concept for a boutique fitness and strength training brand.',
     category: PROJECT_CATEGORIES.BRAND_IDENTITY,
     toolSlugs: ['figma', 'illustrator'],
-    image: '/images/projects/placeholder.jpg',
+    image: '/images/project/placeholder/generic-website.svg',
     featured: false,
     isDummy: true,
+    isPlaceholderCover: true,
   },
   {
     id: 'dummy-brand-4',
@@ -302,8 +323,9 @@ export const projects: Project[] = [
       'Placeholder project — a trustworthy, modern brand identity concept for a fintech startup.',
     category: PROJECT_CATEGORIES.BRAND_IDENTITY,
     toolSlugs: ['figma', 'illustrator'],
-    image: '/images/projects/placeholder.jpg',
+    image: '/images/project/placeholder/generic-website.svg',
     featured: false,
     isDummy: true,
+    isPlaceholderCover: true,
   },
 ];

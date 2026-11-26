@@ -23,6 +23,8 @@ export interface JourneyStep {
   description: string;
 }
 
+import type { CaseStudySection } from '@/types/caseStudy';
+
 export const PROJECT_CATEGORIES = {
   ENTERPRISE_PRODUCT_DESIGN: 'enterprise-product-design',
   FRONTEND_ENGINEERING: 'frontend-engineering',
@@ -31,6 +33,41 @@ export const PROJECT_CATEGORIES = {
 } as const;
 
 export type ProjectCategory = (typeof PROJECT_CATEGORIES)[keyof typeof PROJECT_CATEGORIES];
+
+/**
+ * The axis the Work page filters on. Deliberately separate from `category`,
+ * which drives the badge text and accent colour on the card — renaming the
+ * categories would have changed the visible design.
+ */
+export const PROJECT_TYPES = {
+  UIUX: 'uiux',
+  WEBSITE: 'website',
+  SAAS: 'saas',
+} as const;
+
+export type ProjectType = (typeof PROJECT_TYPES)[keyof typeof PROJECT_TYPES];
+
+/**
+ * How far along the *project* is. Kept strictly separate from Sanity's
+ * editorial draft/published state: a published case study can describe a
+ * concept, and an unpublished one can describe shipped software.
+ */
+export const PROJECT_STATUSES = {
+  CONCEPT: 'concept',
+  IN_PROGRESS: 'in-progress',
+  COMPLETED: 'completed',
+  LIVE: 'live',
+  BETA: 'beta',
+} as const;
+
+export type ProjectStatus = (typeof PROJECT_STATUSES)[keyof typeof PROJECT_STATUSES];
+
+/** Fallback used when a project carries no explicit projectType. */
+export function projectTypeForCategory(category: ProjectCategory): ProjectType {
+  return category === PROJECT_CATEGORIES.ENTERPRISE_PRODUCT_DESIGN
+    ? PROJECT_TYPES.UIUX
+    : PROJECT_TYPES.WEBSITE;
+}
 
 interface ProjectBase {
   id: string;
@@ -42,6 +79,26 @@ interface ProjectBase {
   image: string;
   featured: boolean;
   isDummy?: boolean;
+
+  // --- Added for the Sanity-backed Work page. All optional, so every existing
+  // entry in src/data/project.ts remains valid without edits. ---
+
+  /** Work-page filter bucket. Falls back to projectTypeForCategory(). */
+  projectType?: ProjectType;
+  /** Shown on the Homepage; curated separately from `featured`. */
+  homepageFeatured?: boolean;
+  /** Sort key for the Homepage row. Lower first. */
+  homepageOrder?: number;
+  year?: string;
+  status?: ProjectStatus;
+  client?: string;
+  repoUrl?: string;
+  /** True while `image` is a generated placeholder, not a real screenshot. */
+  isPlaceholderCover?: boolean;
+  /** Keeps thin, placeholder-only pages out of Google until you approve them. */
+  readyForIndexing?: boolean;
+  /** The case-study body, built block by block in Sanity. */
+  caseStudySections?: CaseStudySection[];
 }
 
 export interface EnterpriseProductDesignProject extends ProjectBase {

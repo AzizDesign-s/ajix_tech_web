@@ -5,6 +5,8 @@ import { siteConfig } from '@/config/site';
 import { PersonJsonLd } from '@/components/shared/JsonLd';
 import { MotionProvider } from '@/components/shared/motionProvider';
 import { Analytics } from '@/components/shared/analytics';
+import { ConsentProvider } from '@/components/shared/consentProvider';
+import { ConsentBanner } from '@/components/shared/consentBanner';
 
 const amiri = Amiri({
   subsets: ['latin'],
@@ -103,8 +105,14 @@ export default function RootLayout({
         </a>
         {/* Navbar, <main> and Footer are rendered by the route-group layouts
             (app/(dark) and app/(light)) so each group supplies its own theme. */}
-        <MotionProvider>{children}</MotionProvider>
-        <Analytics />
+        {/* ConsentProvider wraps both the page and Analytics, because the
+            footer's settings control and the script gating read the same
+            value. The banner renders last so it is last in the tab order. */}
+        <ConsentProvider>
+          <MotionProvider>{children}</MotionProvider>
+          <Analytics />
+          <ConsentBanner />
+        </ConsentProvider>
       </body>
     </html>
   );

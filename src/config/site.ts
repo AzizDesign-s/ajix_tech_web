@@ -35,9 +35,11 @@ export const socials = {
 // entry here the moment that page ships real content.
 // /contact was removed when the Contact page shipped — it is now indexable and
 // listed in the sitemap.
-export const placeholderRoutes = ['/projects'];
+// /projects was removed when the Work page shipped — it is now indexable and
+// listed in the sitemap alongside every project that is ready for indexing.
+export const placeholderRoutes: string[] = [];
 
-// Project detail pages (/projects/[slug]) are not built yet, so linking a card
-// to its slug would 404. Flip this to true when those routes exist and every
-// project card becomes clickable again — no component changes needed.
-export const projectDetailPagesEnabled = false;
+// /projects/[slug] now exists, so project cards link to it. Kept as a flag
+// rather than deleted: if the route ever has to be pulled, flipping this back
+// makes every card non-clickable again with no component changes.
+export const projectDetailPagesEnabled = true;

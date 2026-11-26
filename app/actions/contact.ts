@@ -9,7 +9,13 @@ import {
   toFieldErrors,
   MIN_FILL_MS,
 } from '@/lib/validation/contactSchema';
-import { buildHtml, buildSubject, buildText } from '@/lib/email/contactEmail';
+import { buildHtml, buildSubject, buildText } from '@/lib/email/notification';
+import {
+  buildConfirmationHtml,
+  buildConfirmationSubject,
+  buildConfirmationText,
+} from '@/lib/email/confirmation';
+import { getSiteSettings } from '@/lib/services/siteSettings';
 import { fingerprint, isDuplicate, rateLimit } from '@/lib/rateLimit';
 
 export type ContactFormState = {
@@ -18,6 +24,14 @@ export type ContactFormState = {
   fieldErrors: Record<string, string>;
   /** Changes on every submission so the client can react to repeat outcomes. */
   submittedAt?: number;
+  /**
+   * Whether the confirmation to the sender was accepted by Resend.
+   *
+   * The success screen only promises a confirmation when this is true. On the
+   * `onboarding@resend.dev` test sender this is always false — that sender can
+   * only deliver to the account owner — and the UI must not claim otherwise.
+   */
+  confirmationSent?: boolean;
 };
 
 export const initialContactState: ContactFormState = {
@@ -98,6 +112,9 @@ export async function submitContactForm(
 
   try {
     const resend = new Resend(apiKey);
+
+    // 5a. The enquiry notification. This one decides the outcome: if it fails,
+    //     the message did not reach anyone and the visitor must be told so.
     const { data, error } = await resend.emails.send({
       from,
       to: [to],
@@ -108,10 +125,40 @@ export async function submitContactForm(
     });
 
     if (error || !data?.id) {
-      console.error('[contact] Resend rejected the request:', error);
+      console.error('[contact] Resend rejected the enquiry notification:', error);
       return fail(
         'Your message could not be sent right now. Please try again, or email me directly.',
       );
+    }
+
+    // 5b. The confirmation back to the sender. Courtesy, not delivery — the
+    //     enquiry is already through. A failure here is logged and reported
+    //     honestly to the UI, but never turns a received message into an
+    //     error the visitor has to act on.
+    //
+    //     It fails predictably in one case: the `onboarding@resend.dev` test
+    //     sender can only deliver to the Resend account owner, so every
+    //     confirmation to a real visitor is rejected until a domain is
+    //     verified. That is why this is reported rather than assumed.
+    let confirmationSent = false;
+    try {
+      const { availability } = await getSiteSettings();
+      const confirmation = await resend.emails.send({
+        from,
+        to: [submission.email],
+        replyTo: to,
+        subject: buildConfirmationSubject(submission),
+        text: buildConfirmationText(submission, availability),
+        html: buildConfirmationHtml(submission, availability),
+      });
+
+      if (confirmation.error || !confirmation.data?.id) {
+        console.error('[contact] Confirmation to sender was rejected:', confirmation.error);
+      } else {
+        confirmationSent = true;
+      }
+    } catch (confirmationError) {
+      console.error('[contact] Confirmation to sender failed:', confirmationError);
     }
 
     // Resend has ACCEPTED the message. Delivery happens asynchronously and is
@@ -121,6 +168,7 @@ export async function submitContactForm(
       message: 'Thanks — your message has been sent. I usually reply within 24 hours.',
       fieldErrors: {},
       submittedAt: Date.now(),
+      confirmationSent,
     };
   } catch (caught) {
     console.error('[contact] Unexpected failure sending enquiry:', caught);

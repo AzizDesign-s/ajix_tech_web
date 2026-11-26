@@ -49,6 +49,14 @@ export const iconMap = {
   'intent-project': Rocket,
   'intent-collaborate': Handshake,
   'intent-hello': Hand,
+  // Work page — Featured Capabilities. All six reuse icons already imported
+  // above, so this adds keys rather than bundle weight.
+  'capability-product-strategy': Target,
+  'capability-ux-research': Users,
+  'capability-interface-design': Palette,
+  'capability-design-systems': Component,
+  'capability-frontend-engineering': Code2,
+  'capability-saas-development': Rocket,
 } satisfies Record<string, LucideIcon>;
 
 export type IconKey = keyof typeof iconMap;

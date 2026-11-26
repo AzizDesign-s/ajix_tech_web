@@ -21,10 +21,19 @@ import {
   intentOptions,
   type ContactIntent,
 } from '@/config/contact';
-import { trackEvent } from '@/lib/analytics';
+import { trackEvent, trackMetaEvent } from '@/lib/analytics';
 import { FormSuccess } from '@/components/sections/contact/formSuccess';
 
-export function ContactForm({ intent }: { intent: ContactIntent }) {
+export function ContactForm({
+  intent,
+  prefilledMessage,
+}: {
+  intent: ContactIntent;
+  /** Safe context carried in from a product or project page. Editable — it is
+   *  a defaultValue on a visible field, not a hidden one, so nothing is sent
+   *  that the sender cannot see and change. */
+  prefilledMessage?: string;
+}) {
   const [state, formAction, isPending] = useActionState(submitContactForm, initialContactState);
   const [clientErrors, setClientErrors] = useState<Record<string, string>>({});
   const formRef = useRef<HTMLFormElement>(null);
@@ -54,6 +63,11 @@ export function ContactForm({ intent }: { intent: ContactIntent }) {
     if (state.status === 'success' && state.submittedAt !== leadTracked.current) {
       leadTracked.current = state.submittedAt;
       trackEvent('generate_lead', { intent });
+      // Meta's standard Lead event, so a form completion is optimisable as a
+      // conversion in Ads Manager. No-ops unless a pixel is configured and
+      // marketing consent was granted. `intent` is a fixed enum value, never
+      // anything the visitor typed.
+      trackMetaEvent('Lead', { content_category: intent });
     }
     if (state.status === 'error' && Object.keys(state.fieldErrors).length > 0) {
       focusFirstError(state.fieldErrors);
@@ -94,7 +108,7 @@ export function ContactForm({ intent }: { intent: ContactIntent }) {
   }
 
   if (state.status === 'success') {
-    return <FormSuccess message={state.message} />;
+    return <FormSuccess message={state.message} confirmationSent={state.confirmationSent} />;
   }
 
   const errors = { ...state.fieldErrors, ...clientErrors };
@@ -346,6 +360,7 @@ export function ContactForm({ intent }: { intent: ContactIntent }) {
             name="message"
             rows={6}
             required
+            defaultValue={prefilledMessage}
             aria-invalid={Boolean(err('message'))}
             aria-describedby={describedBy('message', false, Boolean(err('message')))}
           />
